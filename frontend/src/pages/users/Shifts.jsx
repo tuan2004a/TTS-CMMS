@@ -7,9 +7,15 @@ import BtnAction from '../../components/common/button/BtnAction'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
 import UsersManagement from './Index'
 import TablePagination from '../../components/table/TablePagination'
-import { UserProvider } from '../../context/userContext'
+import { ShiftProvider, useShiftContext } from '../../context/shiftContext'
+
 
 const ShiftsContext = () => {
+    
+    const { shifts } = useShiftContext();
+    const shiftsData = shifts || [];
+    // console.log(shiftsData)
+
     return (
         <div>
             <div className='flex items-center justify-between flex-wrap'>
@@ -28,50 +34,38 @@ const ShiftsContext = () => {
                     <thead>
                         <tr className='text-gray-500 text-[15px] leading-normal font-medium border-b border-gray-200'>
                             <th className='font-semibold pr-6 py-3 text-nowrap'>Ca làm</th>
-                            <th className='font-semibold pr-6 py-3 text-nowrap'>Thời gian</th>
+                            <th className='font-semibold pr-6 py-3 text-nowrap'>Thời gian ca</th>
+                            <th className='font-semibold pr-6 py-3 text-nowrap'>Nghi chú</th>
                             <th className='font-semibold pr-6 py-3 text-nowrap'>Trạng thái</th>
                             <th className='font-semibold pr-6 py-3 text-nowrap'>Thời gian</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <Cols>
-                            <Rows>
-                                ca sáng
-                            </Rows>
-                            <Rows>
-                                7 giờ - 12 giờ
-                            </Rows>
-                            <Rows className='overflow-hidden'>
-                                <InputCheckBoxStatus className='size-5 ml-1'/>
-                            </Rows>
-                            <Rows className='block space-x-2'>
-                                <BtnAction dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
-                                    <i className="fa-solid fa-file-pen"></i>
-                                </BtnAction>
-                                <BtnAction dataTooltip="Xóa" className='bg-red-500'>
-                                    <i className="fa-solid fa-trash-can"></i>
-                                </BtnAction>
-                            </Rows>
-                        </Cols>
-                        <Cols>
-                            <Rows>
-                                ca chiều
-                            </Rows>
-                            <Rows>
-                                13 giờ - 17 giờ
-                            </Rows>
-                            <Rows className='overflow-hidden'>
-                                <InputCheckBoxStatus className='size-5 ml-1'/>
-                            </Rows>
-                            <Rows className='block space-x-2'>
-                                <BtnAction dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
-                                    <i className="fa-solid fa-file-pen"></i>
-                                </BtnAction>
-                                <BtnAction dataTooltip="Xóa" className='bg-red-500'>
-                                    <i className="fa-solid fa-trash-can"></i>
-                                </BtnAction>
-                            </Rows>
-                        </Cols>
+                        { shiftsData?.length > 0 && shiftsData?.map((items,index)=>(
+                            // {console.log(items)}
+                            <Cols key={index}>
+                                <Rows>
+                                    {items?.shift}
+                                </Rows>
+                                <Rows>
+                                    {items?.time}
+                                </Rows>
+                                <Rows>
+                                    {items?.description}
+                                </Rows>
+                                <Rows className='overflow-hidden'>
+                                    <InputCheckBoxStatus className='size-5 ml-1'/>
+                                </Rows>
+                                <Rows className='block space-x-2'>
+                                    <BtnAction dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
+                                        <i className="fa-solid fa-file-pen"></i>
+                                    </BtnAction>
+                                    <BtnAction dataTooltip="Xóa" className='bg-red-500'>
+                                        <i className="fa-solid fa-trash-can"></i>
+                                    </BtnAction>
+                                </Rows>
+                            </Cols>
+                        ))}
                     </tbody>
                 </table>    
                 <TablePagination/>
@@ -82,11 +76,11 @@ const ShiftsContext = () => {
 
 const Shifts = () => {
     return (
-        <UserProvider>
+        <ShiftProvider>
             <UsersManagement>
                 <ShiftsContext />
             </UsersManagement>
-        </UserProvider>
+        </ShiftProvider>
     );
 };
 

@@ -10,17 +10,17 @@ import Dashboard from './components/systemMaintenance/Dashboard';
 function App() {
     return (
         <>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<ControlPanel />} />
-                    <Route path="/users" element={<Users />} />
-                    <Route path="/users/roles" element={<Role />} />
-                    <Route path="/users/Account" element={<Account />} />
-                    <Route path="/users/shifts" element={<Shifts />} />
-                    <Route path="/users/departments" element={<Department />} />
-                    <Route path="/systemMaintenance/dashboard" element={<Dashboard />} />
-                </Routes>
-            </Router>
+        <Router>
+            <Routes>
+                <Route path="/" element={<ControlPanel />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/users/account" element={<Account />} />
+                <Route path="/users/role" element={<Role />} />
+                <Route path="/users/department" element={<Department />} />
+                <Route path="/users/shift" element={<Shifts />} />
+                {/* <Route path="/systemMaintenance/dashboard" element={<Dashboard />} /> */}
+            </Routes>
+        </Router>
         </>
     )
 }

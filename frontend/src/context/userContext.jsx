@@ -1,5 +1,5 @@
 import React, {createContext,useState,useCallback,useContext,useEffect,useMemo,useRef} from 'react';
-import userSlice from '../store/slice/userSlice';
+import userSlice from '../store/slice/Users/userSlice';
 
 export const UserContext = createContext(null);
 
