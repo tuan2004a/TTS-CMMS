@@ -1,9 +1,8 @@
 // pages/Users.jsx
 import React from 'react';
-import MasterLayout from '../components/layout/MasterLayOut';
-import { UserProvider } from '../context/userContext';
+import MasterLayout from '../../components/layout/MasterLayOut';
 
-export const UsersLayout = ({ children }) => {
+const UsersManagement = ({ children }) => {
     const menuInfo = {
         title: 'Quản lý người dùng',
         icon: 'fa-solid fa-users',
@@ -24,12 +23,4 @@ export const UsersLayout = ({ children }) => {
         </MasterLayout>
     );
 };
-
-const UserManagement = ({children}) => {
-    return (
-        <UserProvider>
-            <Account>{children}</Account>
-        </UserProvider>
-    );
-};
-export default UserManagement;
+export default UsersManagement;

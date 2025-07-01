@@ -1,14 +1,16 @@
 import React from 'react';
-import Users from '../../pages/Users';
-import Cols from '../table/Cols';
-import Rows from '../table/Rows';
-import InputCheckBoxStatus from '../common/input/InputCheckBoxStatus';
-import BtnAction from '../common/button/BtnAction';
-import TablePagination from '../table/TablePagination';
-import InputSeach from '../common/input/InputSeach';
-import BtnSubmit from '../common/button/BtnSubmit';
+import Users from './Index';
+import Cols from '../../components/table/Cols';
+import Rows from '../../components/table/Rows';
+import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus';
+import BtnAction from '../../components/common/button/BtnAction';
+import TablePagination from '../../components/table/TablePagination';
+import InputSeach from '../../components/common/input/InputSeach';
+import BtnSubmit from '../../components/common/button/BtnSubmit';
+import { UserProvider } from '../../context/userContext';
 
-const Role = () => {
+
+const RoleContext = () => {
     return (
         <Users>
             <div>
@@ -60,6 +62,16 @@ const Role = () => {
 
             </div>
         </Users>
+    )
+}
+
+const  Role = () => {
+    return (
+        <UserProvider>
+            <UsersManagement>
+                <RoleContext />
+            </UsersManagement>
+        </UserProvider>
     )
 }
 

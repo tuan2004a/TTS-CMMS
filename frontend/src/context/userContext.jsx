@@ -15,13 +15,13 @@ export const UserProvider = ({ children }) => {
 
     const LoadUsers = useCallback(async () => {
         try {
-            await userSlice.getState().fetchUsers();
-            const response = userSlice.getState().users;
+            const response = await userSlice.getState().fetchUsers();
             setState({
                 users: response,
                 isLoading: false,
                 error: null,
             });
+            // console.log(response);
             return response;
         } catch (error) {
             setState({
@@ -45,7 +45,7 @@ export const UserProvider = ({ children }) => {
     }), [LoadUsers, state]);
 
     return (
-        <UserContext.Provider value={{contextValue}}>
+        <UserContext.Provider value={contextValue}>
             {children}
         </UserContext.Provider>
     );
