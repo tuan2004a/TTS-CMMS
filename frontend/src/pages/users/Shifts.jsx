@@ -8,6 +8,10 @@ import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStat
 import UsersManagement from './Index'
 import TablePagination from '../../components/table/TablePagination'
 import { ShiftProvider, useShiftContext } from '../../context/shiftContext'
+import FormAddNew from '../../components/users/FormAddNew';
+import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
+import ModalDelete from '../../components/modal/DeleteModal';
+import useOpenModalDelete from '../../hooks/useOpenModelDelete';
 
 
 const ShiftsContext = () => {
@@ -16,6 +20,9 @@ const ShiftsContext = () => {
     const shiftsData = shifts || [];
     // console.log(shiftsData)
 
+    const {isOpenFormAddNew,handleOpenFormAddNew,handleCloseFormAddNew} = useOpenFormAddNew();
+    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete,} = useOpenModalDelete();
+
     return (
         <div>
             <div className='flex items-center justify-between flex-wrap'>
@@ -23,7 +30,7 @@ const ShiftsContext = () => {
                     <InputSeach/>
                 </div>
                 <div>
-                    <BtnSubmit className={'bg-blue-600 text-white py-3 px-4.5'}>
+                    <BtnSubmit onClick={handleOpenFormAddNew} className={'bg-blue-600 text-white py-3 px-4.5'}>
                         <i className="fa-solid fa-plus text-xs mr-2"></i> 
                         Thêm mới
                     </BtnSubmit>
@@ -57,10 +64,10 @@ const ShiftsContext = () => {
                                     <InputCheckBoxStatus className='size-5 ml-1'/>
                                 </Rows>
                                 <Rows className='block space-x-2'>
-                                    <BtnAction dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
+                                    <BtnAction  dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
                                         <i className="fa-solid fa-file-pen"></i>
                                     </BtnAction>
-                                    <BtnAction dataTooltip="Xóa" className='bg-red-500'>
+                                    <BtnAction onClick={handleOpenModelDelete} dataTooltip="Xóa" className='bg-red-500'>
                                         <i className="fa-solid fa-trash-can"></i>
                                     </BtnAction>
                                 </Rows>
@@ -69,6 +76,12 @@ const ShiftsContext = () => {
                     </tbody>
                 </table>    
                 <TablePagination/>
+            </div>
+            <div>
+                <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew}   />
+            </div>
+            <div>
+                <ModalDelete isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} />
             </div>
         </div>
     )
