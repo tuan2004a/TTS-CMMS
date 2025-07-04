@@ -14,4 +14,14 @@ export class ShiftService {
             throw error;
         }
     }
+
+    async createShift(data){
+        try {
+            const res = await axios.post(API_URL + '/shift/createShifts', data);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
 }

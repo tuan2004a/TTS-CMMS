@@ -1,3 +1,4 @@
+//store/slice/Users/shiftSlice.js
 import { create } from 'zustand';
 import { ShiftService } from '../../../service/Users/shiftService';
 
@@ -15,6 +16,19 @@ const shiftsSlice = create((set)=>({
             throw error
         }
     },
+
+    createNewShift: async(shiftData) => {
+        try {
+            const shiftService = new ShiftService();
+            const response = await shiftService.createShift(shiftData);
+
+            console.log(response)
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error creating case on file slice");
+        }
+    }
 }))
 
 export default shiftsSlice;

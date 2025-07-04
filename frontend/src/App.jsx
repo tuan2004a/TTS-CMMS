@@ -6,11 +6,13 @@ import Account from './pages/users/Account';
 import Department from './pages/users/Departments';
 import Shifts from './pages/users/Shifts';
 import Dashboard from './components/systemMaintenance/Dashboard';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
     return (
         <>
         <Router>
+            <ToastContainer />
             <Routes>
                 <Route path="/" element={<ControlPanel />} />
                 <Route path="/users" element={<Users />} />

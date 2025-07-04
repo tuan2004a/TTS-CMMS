@@ -1,3 +1,4 @@
+    //context/shiftContext.jsx
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import shiftSlice from "../store/slice/Users/shiftSlice";
 
@@ -39,10 +40,23 @@ export const ShiftProvider = ({ children }) => {
         }
     }, [LoadShifts]);
 
+
+    const createShift = useCallback(async(formData) => {
+        try {
+            const response = await shiftSlice.getState().createNewShift(formData);
+            console.log('tạo thành công');
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error creating shift");
+        }
+    },[] )
+
     const contextValue = useMemo(() => ({
         ...state,
         LoadShifts,
-    }), [LoadShifts, state]);
+        createShift
+    }), [LoadShifts, state, createShift]);
 
     return (
         <ShiftContext.Provider value={contextValue}>
