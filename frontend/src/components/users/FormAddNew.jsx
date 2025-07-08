@@ -4,20 +4,22 @@ import BtnClostX from '../common/button/BtnClostX';
 import BtnSubmit from '../common/button/BtnSubmit';
 import { useShiftContext } from '../../context/shiftContext';
 import { showSuccess, showError } from '../../utils/toast'; 
+import { shiftValidate } from '../../form/Validations/Shif.validate';
 
 const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
 
     const {createShift} = useShiftContext();
-    const [formData, setFormData] = useState({
-        shift: '',
-        time:'',
-        description: '',
-        status: true,
-    })
     const [error , setError] = useState({
         name:"",
         message:""
     })
+    const initialFormData = {
+        shift: '',
+        time: '',
+        description: '',
+        status: true,
+    };
+    const [formData, setFormData] = useState(initialFormData)
 
     const handlInputChange = (e)=>{
         const {name, value} = e.target;
@@ -25,12 +27,7 @@ const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
     }
 
     const handleCloseForm = ()=>{
-        setFormData({
-            shift: '',
-            time:'',
-            description: '',
-            status: true,
-        })
+        setFormData(initialFormData);
         setError({
             name:"",
             message:""
@@ -39,29 +36,22 @@ const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
     }
 
     const handleSubmit = (e) =>{
-        if(formData.shift === ''){
-            setError({
-                name: "shift",
-                message: "Vui lòng nhập tên ca làm việc"
-            })
-            return;
-        }else if(formData.time === ''){
-            setError({
-                name: "time",
-                message: "Vui lòng nhập thời gian"
-            })
+
+        const errorValidate = shiftValidate(formData);
+        if (errorValidate) {
+            setError(errorValidate);
             return;
         }
+
         e.preventDefault();
         try {
             createShift(formData);
             handleCloseFormAddNew();
             showSuccess('Thêm ca làm việc thành công');
-            setFormData({
-                shift: '',
-                time:'',
-                description: '',
-                status: true,
+            setFormData(initialFormData);
+            setError({
+                name:"",
+                message:""
             })
         } catch (error) {
             console.log(error);

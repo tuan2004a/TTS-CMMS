@@ -7,9 +7,10 @@ const shiftsSlice = create((set)=>({
         try {
             const shiftService = new ShiftService();
             const result = await shiftService.getShifts();
-            const shifts = result?.docs;
+            const shifts = result;
             set({ shifts: shifts });
             // console.log(shifts);
+
             return shifts;
         } catch (error) {
             console.log(error);
@@ -28,7 +29,19 @@ const shiftsSlice = create((set)=>({
             console.log(error);
             throw new Error("Error creating case on file slice");
         }
-    }
+    },
+
+    deleteShift: async(shiftId) => {
+        try {
+            const shiftService = new ShiftService();
+            const response = await shiftService.deleteShift(shiftId);
+            console.log(response);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error deleting shift");
+        }
+    },
 }))
 
 export default shiftsSlice;

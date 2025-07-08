@@ -12,11 +12,13 @@ const initialState = {
 
 export const ShiftProvider = ({ children }) => {
     const [state, setState] = useState(initialState);
+    // const [page, setPage] = useState(1);
     const fetchShiftsRef = useRef(null);
 
     const LoadShifts = useCallback(async () => {
         try {
             const response = await shiftSlice.getState().fetchShifts();
+            // const shiftsToPage = await shiftSlice.getState().getToPageShifts(1, 10);
             setState({
                 shifts: response,
                 isLoading: false,
@@ -40,7 +42,6 @@ export const ShiftProvider = ({ children }) => {
         }
     }, [LoadShifts]);
 
-
     const createShift = useCallback(async(formData) => {
         try {
             const response = await shiftSlice.getState().createNewShift(formData);
@@ -50,13 +51,25 @@ export const ShiftProvider = ({ children }) => {
             console.log(error);
             throw new Error("Error creating shift");
         }
-    },[] )
+    },[] );
+
+    const deleteShift = useCallback(async(shiftId) => {
+        try {
+            const response = await shiftSlice.getState().deleteShift(shiftId);
+            console.log('xóa thành công');
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error deleting shift");
+        }
+    },[] );
 
     const contextValue = useMemo(() => ({
         ...state,
         LoadShifts,
-        createShift
-    }), [LoadShifts, state, createShift]);
+        createShift,
+        deleteShift,
+    }), [state,LoadShifts,createShift,deleteShift]);
 
     return (
         <ShiftContext.Provider value={contextValue}>

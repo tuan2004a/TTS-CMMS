@@ -1,30 +1,39 @@
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import { useShiftContext } from '../../context/shiftContext'
+
 
 const TablePagination = () => {
-    const [currentPage, setCurrentPage] = useState(0);
 
-    const itemsPerPage = 10;
-    const totalItems = 100;
-    const pageCount = Math.ceil(totalItems / itemsPerPage);
+    // console.log(itemsPerPage, totalItems);
+    // const [currentPage, setCurrentPage] = useState(0);
 
-    const handlePageChange = ({ selected }) => {
-        setCurrentPage(selected);
-    };
+    // const pageCount = Math.ceil(totalItems / itemsPerPage);
+
+    // const handlePageChange = ({ selected }) => {
+    //     setCurrentPage(selected);
+    //     if (onPageChange) {
+    //         onPageChange(selected + 1);
+    //     }
+    // };
 
     // const startItem = currentPage * itemsPerPage + 1;
     // const endItem = Math.min((currentPage + 1) * itemsPerPage, totalItems);
 
+    // const { page } = useShiftContext();
+    
+
+
     return (
         <div className="flex items-center mt-5 flex-col justify-center space-y-4 min-[525px]:space-y-0 min-[525px]:justify-between min-[525px]:flex-row">
             <div>
-                Trang - {currentPage + 1}/{itemsPerPage}
+                Trang  mục
             </div>
             <div>
                 <ReactPaginate
-                    onPageChange={handlePageChange}
-                    pageCount={pageCount}
-                    forcePage={currentPage}
+                    // onPageChange={}
+                    // pageCount={}
+                    // forcePage={currentPage}
                     breakLabel="..."
                     nextLabel={<i className="fa-solid fa-angle-right"></i>}
                     previousLabel={<i className="fa-solid fa-angle-left"></i>}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InputSeach from '../../components/common/input/InputSeach'
 import BtnSubmit from '../../components/common/button/BtnSubmit'
 import Cols from '../../components/table/Cols'
@@ -12,16 +12,28 @@ import FormAddNew from '../../components/users/FormAddNew';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
 import ModalDelete from '../../components/modal/DeleteModal';
 import useOpenModalDelete from '../../hooks/useOpenModelDelete';
+import { toast } from 'react-toastify'
 
 
 const ShiftsContext = () => {
-    
-    const { shifts } = useShiftContext();
-    const shiftsData = shifts || [];
-    // console.log(shiftsData)
+    const { shifts, deleteShift } = useShiftContext();
+    const shiftsData = shifts?.docs || [];
+    // console.log(shifts)
+
+    const [btnDelete, setBtnDelete] = useState([]);
+
+    const handleDeleteShift = async() => {
+        try {
+            await deleteShift(btnDelete);
+            handleCloseModelDelete();
+            toast.success('Xóa thành công');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const {isOpenFormAddNew,handleOpenFormAddNew,handleCloseFormAddNew} = useOpenFormAddNew();
-    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete,} = useOpenModalDelete();
+    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete} = useOpenModalDelete();
 
     return (
         <div>
@@ -67,7 +79,7 @@ const ShiftsContext = () => {
                                     <BtnAction  dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
                                         <i className="fa-solid fa-file-pen"></i>
                                     </BtnAction>
-                                    <BtnAction onClick={handleOpenModelDelete} dataTooltip="Xóa" className='bg-red-500'>
+                                    <BtnAction  onClick={() => {handleOpenModelDelete(); setBtnDelete(items?._id)}} dataTooltip="Xóa" className='bg-red-500'>
                                         <i className="fa-solid fa-trash-can"></i>
                                     </BtnAction>
                                 </Rows>
@@ -75,13 +87,13 @@ const ShiftsContext = () => {
                         ))}
                     </tbody>
                 </table>    
-                <TablePagination/>
+                <TablePagination  />
             </div>
             <div>
                 <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew}   />
             </div>
             <div>
-                <ModalDelete isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} />
+                <ModalDelete onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} />
             </div>
         </div>
     )
