@@ -3,10 +3,10 @@ import { create } from 'zustand';
 import { ShiftService } from '../../../service/Users/shiftService';
 
 const shiftsSlice = create((set)=>({
-    fetchShifts: async () => {
+    fetchShifts: async ({page, limit}) => {
         try {
             const shiftService = new ShiftService();
-            const result = await shiftService.getShifts();
+            const result = await shiftService.getShifts({page, limit});
             const shifts = result;
             set({ shifts: shifts });
             // console.log(shifts);

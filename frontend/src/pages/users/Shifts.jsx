@@ -16,9 +16,9 @@ import { toast } from 'react-toastify'
 
 
 const ShiftsContext = () => {
-    const { shifts, deleteShift } = useShiftContext();
+    const { shifts, deleteShift, pagination } = useShiftContext();
     const shiftsData = shifts?.docs || [];
-    // console.log(shifts)
+    // console.log(pagination)
 
     const [btnDelete, setBtnDelete] = useState([]);
 
@@ -88,7 +88,7 @@ const ShiftsContext = () => {
                         ))}
                     </tbody>
                 </table>    
-                <TablePagination  />
+                <TablePagination pagination={pagination} />
             </div>
             <div>
                 <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew}   />

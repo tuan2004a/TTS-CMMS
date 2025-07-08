@@ -4,20 +4,14 @@ import { API_URL } from '../../config/api';
 export class ShiftService {
     constructor() {}
 
-    async getShifts() {
+    async getShifts({page, limit}) {
         try {
-            const res = await axios.get(API_URL + '/shift/getALl');
-            // console.log(res.data);
-            return res.data;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
-    }
-
-    async getToPageShifts(page, limit) {
-        try {
-            const res = await axios.get(API_URL + '/shift/getToPageShifts?page=' + page + '&limit=' + limit);
+            const res = await axios.get(API_URL + '/shift/getALl', {
+                params: {
+                    page,
+                    limit,
+                },
+            });
             // console.log(res.data);
             return res.data;
         } catch (error) {
