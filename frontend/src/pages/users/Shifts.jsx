@@ -26,6 +26,7 @@ const ShiftsContext = () => {
         try {
             await deleteShift(btnDelete);
             handleCloseModelDelete();
+            
             toast.success('Xóa thành công');
         } catch (error) {
             console.log(error);

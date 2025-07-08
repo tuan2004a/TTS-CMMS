@@ -18,7 +18,6 @@ export const ShiftProvider = ({ children }) => {
     const LoadShifts = useCallback(async () => {
         try {
             const response = await shiftSlice.getState().fetchShifts();
-            // const shiftsToPage = await shiftSlice.getState().getToPageShifts(1, 10);
             setState({
                 shifts: response,
                 isLoading: false,
@@ -56,7 +55,8 @@ export const ShiftProvider = ({ children }) => {
     const deleteShift = useCallback(async(shiftId) => {
         try {
             const response = await shiftSlice.getState().deleteShift(shiftId);
-            console.log('xóa thành công');
+            await LoadShifts();
+            // console.log('xóa thành công');
             return response;
         } catch (error) {
             console.log(error);

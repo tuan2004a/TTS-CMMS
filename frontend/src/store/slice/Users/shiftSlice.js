@@ -35,7 +35,7 @@ const shiftsSlice = create((set)=>({
         try {
             const shiftService = new ShiftService();
             const response = await shiftService.deleteShift(shiftId);
-            console.log(response);
+            // console.log(response);
             return response;
         } catch (error) {
             console.log(error);
