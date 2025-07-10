@@ -39,7 +39,7 @@ export const ShiftProvider = ({ children }) => {
                 error: null,
             }));
 
-            console.log(response);
+            // console.log(response);
             return response;
         } catch (error) {
             setState(prev => ({
@@ -103,6 +103,7 @@ export const ShiftProvider = ({ children }) => {
 
 export const useShiftContext = () => {
     const context = useContext(ShiftContext);
+    // console.log('ShiftContext:', context);
     if (!context) throw new Error('useShiftContext must be used within a ShiftProvider');
     return context;
 };

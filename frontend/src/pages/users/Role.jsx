@@ -4,7 +4,7 @@ import Cols from '../../components/table/Cols';
 import Rows from '../../components/table/Rows';
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus';
 import BtnAction from '../../components/common/button/BtnAction';
-import TablePagination from '../../components/table/TablePagination';
+// import TablePagination from '../../components/table/TablePagination';
 import InputSeach from '../../components/common/input/InputSeach';
 import BtnSubmit from '../../components/common/button/BtnSubmit';
 import { UserProvider } from '../../context/userContext';
@@ -58,7 +58,7 @@ const RoleContext = () => {
                     </tbody>
                 </table>
             </div>
-            <TablePagination/>
+            {/* <TablePagination/> */}
 
         </div>
     )

@@ -3,7 +3,7 @@ import React from 'react';
 import Cols from '../../components/table/Cols';
 import Rows from '../../components/table/Rows';
 import BtnAction from '../../components/common/button/BtnAction';
-import TablePagination from '../../components/table/TablePagination';
+// import TablePagination from '../../components/table/TablePagination';
 import InputSeach from '../../components/common/input/InputSeach';
 import BtnSubmit from '../../components/common/button/BtnSubmit';
 import UsersManagement from './Index';
@@ -69,7 +69,7 @@ const AccountContent = () => {
                 ))}
                 </tbody>
             </table>
-            <TablePagination />
+            {/* <TablePagination /> */}
             </div>
 
             <div>

@@ -6,17 +6,18 @@ import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
 import UsersManagement from './Index'
-import TablePagination from '../../components/table/TablePagination'
-import { ShiftProvider, useShiftContext } from '../../context/shiftContext'
+// import TablePagination from '../../components/table/TablePagination'
+import { ShiftProvider, useShiftContext } from '../../context/shiftContext';
 import FormAddNew from '../../components/users/FormAddNew';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
 import ModalDelete from '../../components/modal/DeleteModal';
 import useOpenModalDelete from '../../hooks/useOpenModelDelete';
 import { toast } from 'react-toastify'
+import { Pagination } from 'antd'
 
 
 const ShiftsContext = () => {
-    const { shifts, deleteShift, pagination } = useShiftContext();
+    const { shifts, deleteShift, pagination, setPage } = useShiftContext();
     const shiftsData = shifts?.docs || [];
     // console.log(pagination)
 
@@ -32,6 +33,10 @@ const ShiftsContext = () => {
             console.log(error);
         }
     }
+
+    const handleChange = (page) => {
+        setPage(page);
+    };
 
     const {isOpenFormAddNew,handleOpenFormAddNew,handleCloseFormAddNew} = useOpenFormAddNew();
     const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete} = useOpenModalDelete();
@@ -87,8 +92,15 @@ const ShiftsContext = () => {
                             </Cols>
                         ))}
                     </tbody>
-                </table>    
-                <TablePagination pagination={pagination} />
+                </table>
+                
+                <Pagination
+                    current={pagination?.currentPage}
+                    total={pagination?.totalDocs}
+                    pageSize={pagination?.limit}
+                    onChange={handleChange}
+                />
+                {/* <TablePagination pagination={pagination} /> */}
             </div>
             <div>
                 <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew}   />
