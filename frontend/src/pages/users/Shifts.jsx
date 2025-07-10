@@ -6,28 +6,34 @@ import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
 import UsersManagement from './Index'
-// import TablePagination from '../../components/table/TablePagination'
 import { ShiftProvider, useShiftContext } from '../../context/shiftContext';
 import FormAddNew from '../../components/users/FormAddNew';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
 import ModalDelete from '../../components/modal/DeleteModal';
 import useOpenModalDelete from '../../hooks/useOpenModelDelete';
 import { toast } from 'react-toastify'
-import { Pagination } from 'antd'
+import { Pagination } from 'antd';
+import FormEditData from '../../components/users/FormEditData';
+import useOpenFormEdit from '../../hooks/useOpenFormEdit';
 
 
 const ShiftsContext = () => {
+
+    const {isOpenFormAddNew,handleOpenFormAddNew,handleCloseFormAddNew} = useOpenFormAddNew();
+    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete} = useOpenModalDelete();
+    const {isOpenFormEdit,handleOpenFormEdit,handleCloseFormEdit,} = useOpenFormEdit();
+
     const { shifts, deleteShift, pagination, setPage } = useShiftContext();
     const shiftsData = shifts?.docs || [];
     // console.log(pagination)
 
-    const [btnDelete, setBtnDelete] = useState([]);
+    const [btnClick, setBtnClick] = useState([]);
+    const [selectedShift,setSelectedShift] = useState(null);
 
     const handleDeleteShift = async() => {
         try {
-            await deleteShift(btnDelete);
+            await deleteShift(btnClick);
             handleCloseModelDelete();
-            
             toast.success('Xóa thành công');
         } catch (error) {
             console.log(error);
@@ -38,8 +44,10 @@ const ShiftsContext = () => {
         setPage(page);
     };
 
-    const {isOpenFormAddNew,handleOpenFormAddNew,handleCloseFormAddNew} = useOpenFormAddNew();
-    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete} = useOpenModalDelete();
+    const handleEditShift = (shift)=>{
+        handleOpenFormEdit();
+        setSelectedShift(shift);
+    }
 
     return (
         <div>
@@ -67,7 +75,6 @@ const ShiftsContext = () => {
                     </thead>
                     <tbody>
                         { shiftsData?.length > 0 && shiftsData?.map((items,index)=>(
-                            // {console.log(items)}
                             <Cols key={index}>
                                 <Rows>
                                     {items?.shift}
@@ -82,10 +89,10 @@ const ShiftsContext = () => {
                                     <InputCheckBoxStatus className='size-5 ml-1'/>
                                 </Rows>
                                 <Rows className='block space-x-2'>
-                                    <BtnAction  dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
+                                    <BtnAction onClick={() => {handleEditShift(items) }}  dataTooltip="Chỉnh sửa" className='bg-[#36fe00]'>
                                         <i className="fa-solid fa-file-pen"></i>
                                     </BtnAction>
-                                    <BtnAction  onClick={() => {handleOpenModelDelete(); setBtnDelete(items?._id)}} dataTooltip="Xóa" className='bg-red-500'>
+                                    <BtnAction  onClick={() => {handleOpenModelDelete(); setBtnClick(items?._id)}} dataTooltip="Xóa" className='bg-red-500'>
                                         <i className="fa-solid fa-trash-can"></i>
                                     </BtnAction>
                                 </Rows>
@@ -100,10 +107,12 @@ const ShiftsContext = () => {
                     pageSize={pagination?.limit}
                     onChange={handleChange}
                 />
-                {/* <TablePagination pagination={pagination} /> */}
             </div>
             <div>
                 <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew}   />
+            </div>
+            <div>
+                <FormEditData isOpen={isOpenFormEdit} handleCloseForm={handleCloseFormEdit} shiftData={selectedShift} />
             </div>
             <div>
                 <ModalDelete onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} />

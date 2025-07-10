@@ -31,6 +31,18 @@ const shiftsSlice = create((set)=>({
         }
     },
 
+    updateShift: async(shiftId, data) =>{
+        try {
+            const shiftService = new ShiftService();
+            const response = await shiftService.updateShift(shiftId, data);
+            console.log(response.data);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error updating shift");
+        }
+    },
+
     deleteShift: async(shiftId) => {
         try {
             const shiftService = new ShiftService();

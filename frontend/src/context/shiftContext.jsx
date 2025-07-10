@@ -75,10 +75,22 @@ export const ShiftProvider = ({ children }) => {
         }
     }, [LoadShifts]);
 
+    const updateShift = useCallback(async (shiftId, formData) => {
+        try {
+            const response = await shiftSlice.getState().updateShift(shiftId, formData);
+            console.log('Cập nhật thành công');
+            await LoadShifts(); // cập nhật lại danh sách sau khi sửa
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error updating shift");
+        }
+    }, [LoadShifts]);
+
     const deleteShift = useCallback(async (shiftId) => {
         try {
             const response = await shiftSlice.getState().deleteShift(shiftId);
-            await LoadShifts(); // cập nhật lại danh sách sau khi xóa
+            await LoadShifts();
             return response;
         } catch (error) {
             console.error(error);
@@ -92,7 +104,8 @@ export const ShiftProvider = ({ children }) => {
         setPage,
         createShift,
         deleteShift,
-    }), [state, LoadShifts, setPage, createShift, deleteShift]);
+        updateShift
+    }), [state, LoadShifts, setPage, createShift, deleteShift,updateShift]);
 
     return (
         <ShiftContext.Provider value={contextValue}>

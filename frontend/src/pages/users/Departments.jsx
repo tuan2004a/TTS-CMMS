@@ -5,7 +5,6 @@ import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
 import UsersManagement from './Index'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
-// import TablePagination from '../../components/table/TablePagination';
 import { UserProvider } from '../../context/userContext';
 
 

@@ -30,6 +30,16 @@ export class ShiftService {
         }
     }
 
+    async updateShift(shiftId, shiftData){
+        try {
+            const res = await axios.put(API_URL + '/shift/updateShifts/' + shiftId, shiftData);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
     async deleteShift(shiftId){
         try {
             const res = await axios.delete(API_URL + '/shift/deleteShifts/' + shiftId);
