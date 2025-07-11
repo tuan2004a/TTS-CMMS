@@ -1,10 +1,10 @@
 //compponent/users/FormAddNew.jsx
 import React, { useState } from 'react'
-import BtnClostX from '../common/button/BtnClostX';
-import BtnSubmit from '../common/button/BtnSubmit';
-import { useShiftContext } from '../../context/shiftContext';
-import { showSuccess, showError } from '../../utils/toast'; 
-import { shiftValidate } from '../../form/Validations/Shif.validate';
+import BtnClostX from '../../common/button/BtnClostX';
+import BtnSubmit from '../../common/button/BtnSubmit';
+import { useShiftContext } from '../../../context/shiftContext';
+import { showSuccess, showError } from '../../../utils/toast'; 
+import { shiftValidate } from '../../../form/Validations/Shif.validate';
 
 const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
 

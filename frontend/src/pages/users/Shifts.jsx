@@ -5,15 +5,15 @@ import Cols from '../../components/table/Cols'
 import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
-import UsersManagement from './Index'
+import UsersManagement from './Index';
 import { ShiftProvider, useShiftContext } from '../../context/shiftContext';
-import FormAddNew from '../../components/users/FormAddNew';
+import FormAddNew from '../../components/users/shift/FormAddNew';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
 import ModalDelete from '../../components/modal/DeleteModal';
 import useOpenModalDelete from '../../hooks/useOpenModelDelete';
 import { toast } from 'react-toastify'
 import { Pagination } from 'antd';
-import FormEditData from '../../components/users/FormEditData';
+import FormEditData from '../../components/users/shift/FormEditData';
 import useOpenFormEdit from '../../hooks/useOpenFormEdit';
 
 

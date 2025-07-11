@@ -7,7 +7,6 @@ import BtnAction from '../../components/common/button/BtnAction';
 // import TablePagination from '../../components/table/TablePagination';
 import InputSeach from '../../components/common/input/InputSeach';
 import BtnSubmit from '../../components/common/button/BtnSubmit';
-import { UserProvider } from '../../context/userContext';
 import UsersManagement from './Index';
 
 
@@ -66,11 +65,9 @@ const RoleContext = () => {
 
 const  Role = () => {
     return (
-        <UserProvider>
             <UsersManagement>
                 <RoleContext />
             </UsersManagement>
-        </UserProvider>
     )
 }
 

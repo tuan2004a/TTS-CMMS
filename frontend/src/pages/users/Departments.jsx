@@ -5,7 +5,6 @@ import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
 import UsersManagement from './Index'
 import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
-import { UserProvider } from '../../context/userContext';
 
 
 const DepartmentsContext = () => {
@@ -70,11 +69,9 @@ const DepartmentsContext = () => {
 
 const Departments = () => {
     return (
-        <UserProvider>
             <UsersManagement>
                 <DepartmentsContext/>
             </UsersManagement>
-        </UserProvider>
     )
 }
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import BtnSubmit from '../common/button/BtnSubmit';
-import BtnClostX from '../common/button/BtnClostX';
-import { useShiftContext } from '../../context/shiftContext';
-import { showSuccess } from '../../utils/toast';
+import BtnSubmit from '../../common/button/BtnSubmit';
+import BtnClostX from '../../common/button/BtnClostX';
+import { useShiftContext } from '../../../context/shiftContext';
+import { showSuccess } from '../../../utils/toast';
 
 const FormEditData = ({isOpen,handleCloseForm, shiftData}) => {
 
@@ -48,7 +48,7 @@ const FormEditData = ({isOpen,handleCloseForm, shiftData}) => {
         <div className={`${isOpen? "flex" : "hidden"}  fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full h-full bg-black/70 backdrop-blur-[3px] flex items-center justify-center`}>
             <div className='relative w-full max-w-md bg-white rounded-lg shadow-lg p-5'>
                 <div className='mb-6 flex items-center justify-between'>
-                    <h1 className='text-2xl font-semibold text-gray-800'>Sửa chữa thông tin</h1>
+                    <h1 className='text-2xl font-semibold text-gray-800'>Sửa thông tin</h1>
                     <BtnClostX onClick={handleCloseForm} className="size-8 text-xl hover:bg-gray-200 text-gray-500 rounded-full"/>
                 </div>
                 <form onSubmit={handleSubmit} action="">
