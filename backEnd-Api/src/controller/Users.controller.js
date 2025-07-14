@@ -2,9 +2,9 @@ const Users = require('../models/Users');
 
 const optionsPaginations = {
     limit: 10,
-    // populate: {
-    //     path: 'parent',
-    // },
+    populate: {
+        path: 'roleId',
+    },
     collation: {
         locale: "en",
     },
@@ -37,22 +37,6 @@ exports.getAll = async(req, res) => {
         });
     }
 }; 
-
-exports.getAllUsers = async(req, res) => {
-    try {
-        const Users = await Users.find();
-        return res.send({
-            result: true,
-            ...Users
-        });
-    } catch (error) {
-        return res.status(500).send({
-            result: false,
-            msg: 'lỗi lấy danh sách',
-            error: error.message
-        });
-    }
-};
 
 exports.createUsers = async(req, res) => {
     try {

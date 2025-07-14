@@ -52,7 +52,7 @@ const AccountContent = () => {
                                 <Rows>{items?.name}</Rows>
                                 <Rows>{items?.email}</Rows>
                                 <Rows>{items?.phone}</Rows>
-                                <Rows>{items?.roleId}</Rows>
+                                <Rows>{items?.roleId?.role}</Rows>
                                 <Rows>{items?.status}</Rows>
                                 <Rows>{items?.departmentId}</Rows>
                                 <Rows  className="block space-x-2">

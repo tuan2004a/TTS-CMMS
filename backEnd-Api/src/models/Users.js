@@ -21,12 +21,12 @@ const UserSchema = new Schema({
     },  
     status:{
         type: String,   
-        enum: ['Hoạt động', 'Ngưng hoạt động'],
+        enum: ['isActive', 'isInActive'],
     },
-    roleId:[{
+    roleId:{
         type: Schema.Types.ObjectId,
         ref: "Roles"
-    }],
+    },
     shiftsId:[{
         type: Schema.Types.ObjectId,
         ref: "Shifts"
