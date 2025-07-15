@@ -1,7 +1,7 @@
 const ShiftsModels = require('../models/Shifts');
 
 const optionsPaginations = {
-    limit: 10,
+    limit: 20,
     // populate: {
     //     path: 'parent',
     // },

@@ -1,4 +1,4 @@
-import InputSeach from '../../components/common/input/InputSeach'
+import InputSearch from '../../components/common/input/InputSearch'
 import BtnSubmit from '../../components/common/button/BtnSubmit'
 import Cols from '../../components/table/Cols'
 import Rows from '../../components/table/Rows'
@@ -12,7 +12,7 @@ const DepartmentsContext = () => {
         <div>
             <div className='flex items-center justify-between flex-wrap'>
                 <div className='w-70 '>
-                    <InputSeach/>
+                    <InputSearch/>
                 </div>
                 <div>
                     <BtnSubmit className={'bg-blue-600 text-white py-3 px-4.5'}>

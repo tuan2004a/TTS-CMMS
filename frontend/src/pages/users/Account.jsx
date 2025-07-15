@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Cols from '../../components/table/Cols';
 import Rows from '../../components/table/Rows';
 import BtnAction from '../../components/common/button/BtnAction';
-import InputSeach from '../../components/common/input/InputSeach';
+import InputSearch from '../../components/common/input/InputSearch';
 import BtnSubmit from '../../components/common/button/BtnSubmit';
 import UsersManagement from './Index';
 import DeleteModal from '../../components/modal/DeleteModal';
@@ -38,7 +38,7 @@ const AccountContent = () => {
         <div>
             <div className="flex items-center justify-between flex-wrap">
                 <div className="w-70">
-                    <InputSeach />
+                    <InputSearch />
                 </div>
                 <div>
                     <BtnSubmit onClick={handleOpenFormAddNew} className={'bg-blue-600 text-white py-3 px-4.5'}>

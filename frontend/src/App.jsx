@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router'
 import ControlPanel from './pages/ControlPanel';
 import Users from './pages/users/Index';
-import Role from './pages/users/Role';
+import Role from './pages/users/Roles';
 import Account from './pages/users/Account';
 import Department from './pages/users/Departments';
 import Shifts from './pages/users/Shifts';
