@@ -16,5 +16,27 @@ const accountSlice = create((set) => ({
             throw error
         }
     },
+
+    createNewAccount: async (accountData) => {
+        try {
+            const accountService = new AccountService();
+            const response = await accountService.createAccount(accountData);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error creating account");
+        }
+    },
+
+    deleteAccount: async (accountId) => {
+        try {
+            const accountService = new AccountService();
+            const response = await accountService.deleteAccount(accountId);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error deleting account");
+        }
+    }
 }))
 export default accountSlice;

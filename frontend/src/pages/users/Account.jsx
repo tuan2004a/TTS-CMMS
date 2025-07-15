@@ -1,5 +1,5 @@
 // components/users/Account.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import Cols from '../../components/table/Cols';
 import Rows from '../../components/table/Rows';
 import BtnAction from '../../components/common/button/BtnAction';
@@ -11,12 +11,28 @@ import useOpenModelDelete from '../../hooks/useOpenModelDelete';
 import FormAddNew from '../../components/users/account/FormAddNew';
 import { AccountProvider,useAccountContext } from '../../context/accountContext';
 import { Pagination } from 'antd';
+import { showSuccess } from '../../utils/toast';
+import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
 
 const AccountContent = () => {
     const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete,} = useOpenModelDelete();
-    const { accounts, pagination, setPage } = useAccountContext();
+    const { isOpenFormAddNew, handleOpenFormAddNew, handleCloseFormAddNew } = useOpenFormAddNew();
+    const { deleteAccount, accounts, pagination, setPage } = useAccountContext();
+
     const accountData = accounts?.docs || [];
-    console.log(accountData)
+
+    const [btnClick, setBtnClick] = useState([]);
+    // const [selectedAccount, setSelectedAccount] = useState(null);
+
+    const handleDeleteShift = async () => {
+        try {
+            await deleteAccount(btnClick);
+            handleCloseModelDelete();
+            showSuccess('Xóa thành công');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <div>
@@ -25,7 +41,7 @@ const AccountContent = () => {
                     <InputSeach />
                 </div>
                 <div>
-                    <BtnSubmit className={'bg-blue-600 text-white py-3 px-4.5'}>
+                    <BtnSubmit onClick={handleOpenFormAddNew} className={'bg-blue-600 text-white py-3 px-4.5'}>
                         <i className="fa-solid fa-plus text-xs mr-2"></i>
                         Thêm mới
                     </BtnSubmit>
@@ -35,7 +51,7 @@ const AccountContent = () => {
                 <table className="text-left mt-5 w-full min-w-[850px] table-auto">
                     <thead>
                     <tr className="text-gray-500 text-[15px] font-medium border-b border-gray-200">
-                        <th className="font-semibold pr-6 py-3 text-nowrap hidden">Id</th>
+                        <th className="font-semibold pr-6 py-3 text-nowrap ">Mã nhân viên</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">Tên</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">Email</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">SĐT</th>
@@ -49,6 +65,7 @@ const AccountContent = () => {
 
                         {accountData?.length > 0 && accountData?.map((items,index)=>(
                             <Cols key={index}>
+                                <Rows>{items?.code}</Rows>
                                 <Rows>{items?.name}</Rows>
                                 <Rows>{items?.email}</Rows>
                                 <Rows>{items?.phone}</Rows>
@@ -57,10 +74,10 @@ const AccountContent = () => {
                                 <Rows>{items?.departmentId}</Rows>
                                 <Rows  className="block space-x-2">
                                     <BtnAction dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
-                                    <i className="fa-solid fa-file-pen"></i>
+                                        <i className="fa-solid fa-file-pen"></i>
                                     </BtnAction>
-                                    <BtnAction onClick={handleOpenModelDelete} dataTooltip="Xóa" className="bg-red-500">
-                                    <i className="fa-solid fa-trash-can"></i>
+                                    <BtnAction onClick={() => {handleOpenModelDelete(), setBtnClick(items?._id)} } dataTooltip="Xóa" className="bg-red-500">
+                                        <i className="fa-solid fa-trash-can"></i>
                                     </BtnAction>
                                 </Rows>
                             </Cols>
@@ -76,10 +93,10 @@ const AccountContent = () => {
             </div>
 
             <div>
-                <DeleteModal isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} onOpen={handleOpenModelDelete} />
+                <DeleteModal onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} onOpen={handleOpenModelDelete} />
             </div>
             <div>
-                <FormAddNew/>
+                <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew} />  
             </div>
         </div>
     );

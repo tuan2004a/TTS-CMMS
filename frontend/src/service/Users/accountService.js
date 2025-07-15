@@ -19,4 +19,26 @@ export class AccountService {
         }
     }
 
+    async createAccount(data) {
+        try {
+            const res = await axios.post(API_URL + '/users/createUsers', data);
+            // console.log(res.data);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async deleteAccount(accountId) {
+        try {
+            const res = await axios.delete(API_URL + '/users/deleteUsers/' + accountId);
+            // console.log(res.data);
+            return res.data;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
 }

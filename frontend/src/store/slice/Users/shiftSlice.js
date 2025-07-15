@@ -23,7 +23,7 @@ const shiftsSlice = create((set)=>({
             const shiftService = new ShiftService();
             const response = await shiftService.createShift(shiftData);
 
-            console.log(response)
+            // console.log(response)
             return response;
         } catch (error) {
             console.log(error);

@@ -48,11 +48,36 @@ export const AccountProvider = ({children}) => {
             fetchShiftsRef.current();
         }
     }, [LoadAccount]);
+
+    const createAccount = useCallback(async (formData) => {
+        try {
+            const response = await accountSlice.getState().createNewAccount(formData);
+            console.log('Tạo thành công');
+            await LoadAccount(); // cập nhật lại danh sách sau khi thêm
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error creating account");
+        }
+    }, [LoadAccount]);
+
+    const deleteAccount = useCallback(async (accountId) => {
+        try {
+            const response = await accountSlice.getState().deleteAccount(accountId);
+            await LoadAccount();
+            return response;
+        } catch (error) {
+            console.error(error);
+            throw new Error("Error deleting account");
+        }
+    }, [LoadAccount]);
     
     const contextValue = useMemo(()=>({
         ...state,
-        LoadAccount
-    }),[state, LoadAccount])
+        LoadAccount,
+        deleteAccount,
+        createAccount
+    }), [state, LoadAccount, deleteAccount, createAccount])
 
     return (
         <AccountContext.Provider value={contextValue}>

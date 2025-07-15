@@ -4,6 +4,11 @@ const mongoosePageinte = require('mongoose-paginate-v2');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
+    code: {
+        type: String,
+        trim: true,
+        required: [true, "code is require!"]
+    },
     name: {
         type: String,
     },
@@ -11,7 +16,6 @@ const UserSchema = new Schema({
         type: String,
         require:[true, "Email is require!"],
         trim: true,
-        unique: [true, "Email must be unique"]
     },
     phone:{
         type: String,
