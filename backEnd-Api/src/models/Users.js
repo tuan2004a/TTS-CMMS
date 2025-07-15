@@ -7,25 +7,29 @@ const UserSchema = new Schema({
     code: {
         type: String,
         trim: true,
-        required: [true, "code is require!"]
+        required: [true, "code is require!"],
+        unique: true
     },
     name: {
         type: String,
     },
     email:{
         type: String,
-        require:[true, "Email is require!"],
+        required: [true, "Email is require!"],
         trim: true,
+        unique: true
     },
     phone:{
         type: String,
     },
     password:{
         type: String,
+        required: [true, "Password is require!"]
     },  
     status:{
         type: String,   
         enum: ['isActive', 'isInActive'],
+        default: 'isActive'
     },
     roleId:{
         type: Schema.Types.ObjectId,

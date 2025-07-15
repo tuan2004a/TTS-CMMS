@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../../config/api';
+import { showSuccess, showError } from '../../utils/toast';
 
 export class AccountService {
     constructor() {}
@@ -22,10 +23,11 @@ export class AccountService {
     async createAccount(data) {
         try {
             const res = await axios.post(API_URL + '/users/createUsers', data);
-            // console.log(res.data);
+            showSuccess('Thêm người dùng thành công');
             return res.data;
         } catch (error) {
             console.log(error);
+            showError('Thêm người dùng thất bại create ở service');
             throw error;
         }
     }

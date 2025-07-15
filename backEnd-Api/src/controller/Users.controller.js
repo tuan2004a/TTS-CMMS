@@ -40,15 +40,18 @@ exports.getAll = async(req, res) => {
 
 exports.createUsers = async(req, res) => {
     try {
-        const {name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
-        const newUsers = new Users({name,email,phone,password,status,roleId,shiftsId,departmentId});
+        const {code, name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
+        const newUsers = new Users({code, name,email,phone,password,status,roleId,shiftsId,departmentId});
         const saveUsers = await newUsers.save();
+
+        
         return res.send({
             result: true,
             msg: 'Tạo mới thành công',
             ...saveUsers
         });
     } catch (error) {
+        // console.log(error)
         return res.status(500).send({
             result: false,
             msg: 'lỗi tạo mới',
@@ -60,8 +63,10 @@ exports.createUsers = async(req, res) => {
 exports.updateUsers = async(req, res) => {
     try {
         const UserId = req.params.id;
-        const {name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
-        const updateUsers = await Users.findByIdAndUpdate(UserId, {name, email, phone, password, status, roleId, shiftsId, departmentId},{new:true}).exec();
+        const {code, name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
+        const updateUsers = await Users.findByIdAndUpdate(UserId, {code, name, email, phone, password, status, roleId, shiftsId, departmentId},{new:true}).exec();
+
+        
 
         if(!updateUsers){
             return res.status(404).send({

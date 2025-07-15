@@ -19,6 +19,14 @@ export const AccountValidate = (formData) => {
         };
     }
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+    if (!emailRegex.test(formData.email)) {
+        return {
+            name: "email",
+            message: "Email phải là địa chỉ Gmail hợp lệ (example@gmail.com)"
+        };
+    }
+
     if (!formData.phone || formData.phone.trim() === '') {
         return {
             name: "phone",
@@ -40,11 +48,33 @@ export const AccountValidate = (formData) => {
         };
     }
 
-    if (!formData.phone || formData.phone.trim() === '') {
+    if (!formData.password || formData.password.trim() === '') {
         return {
-            name: "phone",
-            message: "Vui lòng nhập số điện thoại"
+            name: "password",
+            message: "Vui lòng nhập mật khẩu"
         };
     }
-    return null; // ✅ Không có lỗi
+
+    if (formData.password.length < 6) {
+        return {
+            name: "password",
+            message: "Mật khẩu phải có ít nhất 6 ký tự"
+        };
+    }
+
+    if (!formData.role || formData.role.trim() === '') {
+        return {
+            name: "role",
+            message: "Vui lòng chọn vai trò"
+        };
+    }
+
+    if (!formData.department || formData.department.trim() === '') {
+        return {
+            name: "department",
+            message: "Vui lòng nhập bộ phận"
+        };
+    }
+
+    return null;
 };

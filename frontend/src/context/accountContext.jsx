@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import accountSlice from "../store/slice/Users/accountSlice";
+import { showError } from "../utils/toast";
 
 export const AccountContext = createContext(null);
 
@@ -52,12 +53,12 @@ export const AccountProvider = ({children}) => {
     const createAccount = useCallback(async (formData) => {
         try {
             const response = await accountSlice.getState().createNewAccount(formData);
-            console.log('Tạo thành công');
-            await LoadAccount(); // cập nhật lại danh sách sau khi thêm
+            await LoadAccount();
             return response;
         } catch (error) {
             console.error(error);
-            throw new Error("Error creating account");
+            showError('Thêm người dùng thất bại create ở context');
+            throw error;
         }
     }, [LoadAccount]);
 
@@ -68,7 +69,7 @@ export const AccountProvider = ({children}) => {
             return response;
         } catch (error) {
             console.error(error);
-            throw new Error("Error deleting account");
+            throw error; // Chuyển tiếp lỗi từ accountSlice
         }
     }, [LoadAccount]);
     

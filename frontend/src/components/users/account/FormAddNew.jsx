@@ -6,8 +6,7 @@ import BtnClostX from '../../common/button/BtnClostX';
 import { useAccountContext } from '../../../context/accountContext';
 import { Select } from 'antd';
 import { AccountValidate } from '../../../form/Validations/Account.validate';
-
-import { showSuccess } from '../../../utils/toast';
+import { showError } from '../../../utils/toast';
 
 const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
 
@@ -17,9 +16,10 @@ const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
         name: '',
         email: '',
         phone: '',
-        status: 'isActive',
+        password: '',
         role: '',
-        Departments: '',
+        department: '',
+        status: 'isActive'
     };
     const [error, setError] = useState({
         name: "",
@@ -44,17 +44,16 @@ const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
     };
 
     const handleSubmit = (e) => {
+        e.preventDefault();
         const errorValidate = AccountValidate(formData);
         if (errorValidate) {
             setError(errorValidate);
             return;
         }
         
-        e.preventDefault();
         try {
             createAccount(formData);
             handleCloseForm();
-            showSuccess('Thêm người dùng thành công');
             setFormData(initialFormData);
             setError({
                 name: "",
@@ -68,7 +67,7 @@ const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
     };
 
     const onChange = value => {
-        console.log(`selected ${value}`);
+        setFormData(prev => ({ ...prev, role: value }));
     };
     const onSearch = value => {
         console.log('search:', value);
@@ -108,37 +107,40 @@ const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
                         </label>
                         <label htmlFor="password" className='w-full'>
                             <span className='block text-base font-medium text-gray-500'>Mật khẩu</span>
-                            <input name="password" value={formData.password || ''} onChange={handleInputChange} type="text" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' placeholder='Nhập mật khẩu' required />
+                            <input name="password" value={formData.password || ''} onChange={handleInputChange} type="password" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' placeholder='Nhập mật khẩu' required />
+                            {error.name === 'password' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
                         </label>
                     </div>
-                    <label htmlFor="Departments" className='w-full'>
+                    <label htmlFor="department" className='w-full'>
                         <span className='mt-5 block text-base font-medium text-gray-500'>Bộ phận</span>
-                        <input name="Departments" value={formData.Departments || ''} onChange={handleInputChange} type="text" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' placeholder='Nhập quyền' required />
+                        <input name="department" value={formData.department || ''} onChange={handleInputChange} type="text" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' placeholder='Nhập bộ phận' required />
+                        {error.name === 'department' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
                     </label>
                     <label>
                         <span className='mt-5 block text-base font-medium text-gray-500'>Vai trò</span>
                         <Select
                             className="w-full"
                             showSearch
-                            placeholder="Select a person"
+                            placeholder="Chọn vai trò"
                             optionFilterProp="label"
                             onChange={onChange}
                             onSearch={onSearch}
                             options={[
                                 {
-                                    value: 'jack',
-                                    label: 'Jack',
+                                    value: 'admin',
+                                    label: 'Admin',
                                 },
                                 {
-                                    value: 'lucy',
-                                    label: 'Lucy',
+                                    value: 'manager',
+                                    label: 'Manager',
                                 },
                                 {
-                                    value: 'tom',
-                                    label: 'Tom',
+                                    value: 'user',
+                                    label: 'User',
                                 },
                             ]}
                         />
+                        {error.name === 'role' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
                     </label>
                 </form>
                 <div className='flex items-center justify-end space-x-3 mt-6'>

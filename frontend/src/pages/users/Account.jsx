@@ -13,6 +13,7 @@ import { AccountProvider,useAccountContext } from '../../context/accountContext'
 import { Pagination } from 'antd';
 import { showSuccess } from '../../utils/toast';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
+import { ShiftProvider } from '../../context/shiftContext';
 
 const AccountContent = () => {
     const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete,} = useOpenModelDelete();
@@ -96,7 +97,7 @@ const AccountContent = () => {
                 <DeleteModal onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} onOpen={handleOpenModelDelete} />
             </div>
             <div>
-                <FormAddNew isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew} />  
+                <FormAddNew  isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew} />  
             </div>
         </div>
     );
@@ -104,11 +105,13 @@ const AccountContent = () => {
 
 const Account = () => {
     return (
-        <AccountProvider>
-            <UsersManagement>
-                <AccountContent />
-            </UsersManagement>
-        </AccountProvider>
+        <ShiftProvider>
+            <AccountProvider>
+                <UsersManagement>
+                    <AccountContent />
+                </UsersManagement>
+            </AccountProvider>
+        </ShiftProvider>
     );
 };
 

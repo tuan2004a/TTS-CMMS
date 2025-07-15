@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { AccountService } from '../../../service/Users/accountService';
+import { showError } from '../../../utils/toast';
 
 const accountSlice = create((set) => ({
     fetchAccounts: async ({page, limit}) => {
@@ -8,12 +9,10 @@ const accountSlice = create((set) => ({
             const result = await accountService.getAccounts({page, limit});
             const accounts = result;
             set({ accounts: accounts });
-            // console.log(accounts);
-
             return accounts;
         } catch (error) {
             console.log(error);
-            throw error
+            throw error;
         }
     },
 
@@ -24,7 +23,8 @@ const accountSlice = create((set) => ({
             return response;
         } catch (error) {
             console.log(error);
-            throw new Error("Error creating account");
+            showError('Thêm người dùng thất bại create ở slice');
+            throw error; // Chuyển tiếp lỗi từ accountService
         }
     },
 
@@ -35,7 +35,7 @@ const accountSlice = create((set) => ({
             return response;
         } catch (error) {
             console.log(error);
-            throw new Error("Error deleting account");
+            throw error; // Chuyển tiếp lỗi từ accountService
         }
     }
 }))
