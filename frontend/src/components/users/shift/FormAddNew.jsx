@@ -4,7 +4,7 @@ import BtnClostX from '../../common/button/BtnClostX';
 import BtnSubmit from '../../common/button/BtnSubmit';
 import { useShiftContext } from '../../../context/shiftContext';
 import { showSuccess, showError } from '../../../utils/toast'; 
-import { shiftValidate } from '../../../form/Validations/Shif.validate';
+import { shiftValidate } from '../../../form/Validations/Shift.validate';
 
 const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
 

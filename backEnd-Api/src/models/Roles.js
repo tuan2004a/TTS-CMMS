@@ -1,31 +1,24 @@
 const mongoose = require('mongoose');
-const mongoosePageinte = require('mongoose-paginate-v2');
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const Schema = mongoose.Schema;
 
 const RoleSchema = new Schema({
     role: {
         type: String,
-        required: [true, "Role name is required!"],
-        unique: [true, "Role name must be unique"]
+        required: [true, "Tên vai trò không được để trống"],
+        unique: [true, "Tên vai trò phải là duy nhất"]
     },
-    derscription: {
+    description: {
         type: String,
+        default: ''
     },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    },
-    updatedAt: {
-        type: Date,
-        default: Date.now
+    status: {
+        type: Boolean,
+        default: true
     }
-});
+}, { timestamps: true }); // Tự động thêm createdAt và updatedAt
 
-RoleSchema.pre('save', function(next){
-    this.updatedAt = Date.now();
-    next();
-})
+RoleSchema.plugin(mongoosePaginate);
 
-RoleSchema.plugin(mongoosePageinte);
 module.exports = mongoose.model('Roles', RoleSchema);
