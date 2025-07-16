@@ -27,9 +27,7 @@ exports.getAll = async(req, res) => {
             msg: 'lấy danh sách thành công',
             ...User
         });
-        
     } catch (error) {
-        console.log(error)
         return res.status(500).send({
             result: false,
             msg: 'lỗi lấy danh sách',
@@ -40,9 +38,10 @@ exports.getAll = async(req, res) => {
 
 exports.createUsers = async(req, res) => {
     try {
-        const {name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
-        const newUsers = new Users({name,email,phone,password,status,roleId,shiftsId,departmentId});
+        const {code, name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
+        const newUsers = new Users({code, name, email, phone, password, status, roleId, shiftsId, departmentId});
         const saveUsers = await newUsers.save();
+
         return res.send({
             result: true,
             msg: 'Tạo mới thành công',
@@ -60,8 +59,38 @@ exports.createUsers = async(req, res) => {
 exports.updateUsers = async(req, res) => {
     try {
         const UserId = req.params.id;
-        const {name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
-        const updateUsers = await Users.findByIdAndUpdate(UserId, {name, email, phone, password, status, roleId, shiftsId, departmentId},{new:true}).exec();
+        
+        // Get current user to preserve fields not provided in the request
+        const currentUser = await Users.findById(UserId);
+        if (!currentUser) {
+            return res.status(404).send({
+                result: false,
+                msg: 'Không tìm thấy User cần update',
+            });
+        }
+        
+        // Destructure request body
+        const {code, name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
+        
+        // Build update object with current values as fallback
+        const updateData = {
+            code: code || currentUser.code,
+            name: name || currentUser.name,
+            email: email || currentUser.email,
+            phone: phone || currentUser.phone,
+            // Keep current password if not provided
+            password: password || currentUser.password,
+            status: status || currentUser.status,
+            roleId: roleId || currentUser.roleId,
+            shiftsId: shiftsId || currentUser.shiftsId,
+            departmentId: departmentId || currentUser.departmentId
+        };
+        
+        const updateUsers = await Users.findByIdAndUpdate(
+            UserId, 
+            updateData,
+            {new: true}
+        ).exec();
 
         if(!updateUsers){
             return res.status(404).send({
@@ -69,6 +98,7 @@ exports.updateUsers = async(req, res) => {
                 msg: 'Không tìm thấy User cần update',
             });
         }
+        
         return res.send({
             result: true,
             msg: 'Cập nhật thành công',

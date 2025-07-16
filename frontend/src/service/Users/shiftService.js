@@ -2,24 +2,11 @@ import axios from 'axios';
 import { API_URL } from '../../config/api';
 
 export class ShiftService {
-    constructor() {}
-
-    async getShifts({page, limit}) {
-        try {
-            const res = await axios.get(API_URL + '/shift/getALl', {
-                params: {
-                    page,
-                    limit,
-                },
-            });
-            // console.log(res.data);
-            return res.data;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+    constructor() {
+        this.baseUrl = `${API_URL}/shift`;
     }
 
+<<<<<<< HEAD
     async createShift(data){
         try {
             const payload = {
@@ -37,24 +24,32 @@ export class ShiftService {
         }
         }
 
+=======
+    async getShifts({page, limit, keyword, searchField}) {
+        const res = await axios.get(`${this.baseUrl}/getALl`, {
+            params: {
+                page,
+                limit,
+                keyword,
+                searchField
+            },
+        });
+        return res.data;
+    }
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
 
-    async updateShift(shiftId, shiftData){
-        try {
-            const res = await axios.put(API_URL + '/shift/updateShifts/' + shiftId, shiftData);
-            return res.data;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+    async createShift(data) {
+        const res = await axios.post(`${this.baseUrl}/createShifts`, data);
+        return res.data;
     }
 
-    async deleteShift(shiftId){
-        try {
-            const res = await axios.delete(API_URL + '/shift/deleteShifts/' + shiftId);
-            return res.data;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+    async updateShift(shiftId, shiftData) {
+        const res = await axios.put(`${this.baseUrl}/updateShifts/${shiftId}`, shiftData);
+        return res.data;
+    }
+
+    async deleteShift(shiftId) {
+        const res = await axios.delete(`${this.baseUrl}/deleteShifts/${shiftId}`);
+        return res.data;
     }
 }

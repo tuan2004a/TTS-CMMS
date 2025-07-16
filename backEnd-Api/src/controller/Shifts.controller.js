@@ -2,9 +2,6 @@ const ShiftsModels = require('../models/Shifts');
 
 const optionsPaginations = {
     limit: 20,
-    // populate: {
-    //     path: 'parent',
-    // },
     collation: {
         locale: "en",
     },
@@ -14,10 +11,21 @@ exports.getAll = async (req, res) => {
     try {
         const page = req.query.page ? parseInt(req.query.page) : 1;
         const keyword = req.query.keyword;
+        const searchField = req.query.searchField || 'all'; // Default search all fields
         let query = {}
 
         if (keyword) {
-            query.name = { $regex: new RegExp(keyword, "i") };
+            if (searchField === 'shift') {
+                // Search only in shift field
+                query.shift = { $regex: new RegExp(keyword, "i") };
+            } else {
+                // Default search in all fields
+                query.$or = [
+                    { shift: { $regex: new RegExp(keyword, "i") } },
+                    { time: { $regex: new RegExp(keyword, "i") } },
+                    { description: { $regex: new RegExp(keyword, "i") } }
+                ];
+            }
         }
 
         const Shifts = await ShiftsModels.paginate(query, { ...optionsPaginations, page });

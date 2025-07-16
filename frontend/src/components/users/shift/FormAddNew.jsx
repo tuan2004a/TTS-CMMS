@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+//compponent/shift/FormAddNew.jsx
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
 import React, { useState } from 'react'
 import BtnClostX from '../../common/button/BtnClostX'
 import BtnSubmit from '../../common/button/BtnSubmit'
@@ -5,8 +9,13 @@ import { useShiftContext } from '../../../context/shiftContext'
 import { showSuccess, showError } from '../../../utils/toast'
 import { shiftValidate } from '../../../form/Validations/Shift.validate'
 
+<<<<<<< HEAD
 const FormAddNew = ({ handleCloseFormAddNew, isOpenFormAddNew }) => {
   const { createShift } = useShiftContext()
+=======
+
+const FormAddNew = ({handleCloseFormAddNew, isOpenFormAddNew}) => {
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
 
   const [error, setError] = useState({ name: '', message: '' })
   const [showDayDropdown, setShowDayDropdown] = useState(false)

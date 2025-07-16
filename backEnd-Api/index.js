@@ -12,6 +12,7 @@ dotenv.config()
 mongoose.connect('mongodb://localhost:27017/cmms')
     .then(() => console.log("Connected to database"))
 
+app.use(express.json());
 app.use(bodyParser.json({limit:"50mb"}))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));

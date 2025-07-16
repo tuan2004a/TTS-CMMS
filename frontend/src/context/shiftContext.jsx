@@ -15,67 +15,106 @@ const initialState = {
 
 export const ShiftProvider = ({ children }) => {
     const [state, setState] = useState(initialState);
-    const fetchShiftsRef = useRef(null);
+    const loadShiftsRef = useRef(null);
 
-    const LoadShifts = useCallback(async ({ p = state.currentPage, l = state.limit } = {}) => {
-        setState(prev => ({ ...prev, isLoading: true }));
+    /**
+     * Load shifts data with filtering and pagination
+     */
+    const loadShifts = useCallback(async ({ 
+        page = state.currentPage, 
+        limit = state.limit, 
+        keyword = "", 
+        searchField = "" 
+    } = {}) => {
+        setState(prev => ({ ...prev, isLoading: true, error: null }));
         try {
-            const response = await shiftSlice.getState().fetchShifts({ page: p, limit: l });
+            const response = await shiftSlice.getState().fetchShifts({ 
+                page, 
+                limit, 
+                keyword, 
+                searchField 
+            });
+            
             const {
-                hasNextPage, hasPrevPage, limit, nextPage, page, pagingCounter,
-                prevPage, result, totalDocs, totalPages
+                hasNextPage, 
+                hasPrevPage, 
+                limit: respLimit, 
+                nextPage, 
+                pagingCounter,
+                prevPage, 
+                result, 
+                totalDocs, 
+                totalPages
             } = response;
 
             setState(prev => ({
                 ...prev,
                 shifts: response,
                 pagination: {
-                    hasNextPage, hasPrevPage, limit, nextPage, page,
-                    pagingCounter, prevPage, result, totalDocs, totalPages
+                    hasNextPage, 
+                    hasPrevPage, 
+                    limit: respLimit, 
+                    nextPage, 
+                    page,
+                    pagingCounter, 
+                    prevPage, 
+                    result, 
+                    totalDocs, 
+                    totalPages
                 },
                 currentPage: page,
-                limit,
+                limit: respLimit,
                 isLoading: false,
                 error: null,
             }));
 
-            // console.log(response);
             return response;
         } catch (error) {
             setState(prev => ({
                 ...prev,
-                shifts: [],
                 isLoading: false,
-                error,
+                error: error.message || "Failed to load shifts",
             }));
+            throw error;
         }
     }, [state.currentPage, state.limit]);
 
+    /**
+     * Update current page and load data for that page
+     */
     const setPage = useCallback(async (newPage) => {
         setState(prev => ({ ...prev, currentPage: newPage }));
-        await LoadShifts({ p: newPage, l: state.limit });
-    }, [LoadShifts, state.limit]);
+        await loadShifts({ page: newPage });
+    }, [loadShifts]);
 
+    // Initial data loading
     useEffect(() => {
-        fetchShiftsRef.current = LoadShifts;
-        if (fetchShiftsRef.current) {
-            fetchShiftsRef.current();
+        loadShiftsRef.current = loadShifts;
+        if (loadShiftsRef.current) {
+            loadShiftsRef.current();
         }
-    }, [LoadShifts]);
+    }, [loadShifts]);
 
+    /**
+     * Create a new shift
+     */
     const createShift = useCallback(async (formData) => {
+        setState(prev => ({ ...prev, isLoading: true }));
         try {
             const response = await shiftSlice.getState().createNewShift(formData);
-            console.log('Tạo thành công');
-            await LoadShifts(); // cập nhật lại danh sách sau khi thêm
+            await loadShifts();
             return response;
         } catch (error) {
-            console.error(error);
-            throw new Error("Error creating shift");
+            setState(prev => ({ ...prev, isLoading: false, error: error.message }));
+            throw error;
         }
-    }, [LoadShifts]);
+    }, [loadShifts]);
 
+    /**
+     * Update an existing shift
+     */
     const updateShift = useCallback(async (shiftId, formData) => {
+<<<<<<< HEAD
     try {
         // Chuẩn hóa description nếu là mảng → convert sang chuỗi (nếu cần)
         const payload = {
@@ -96,25 +135,42 @@ export const ShiftProvider = ({ children }) => {
     }, [LoadShifts]);
 
 
-    const deleteShift = useCallback(async (shiftId) => {
+=======
+        setState(prev => ({ ...prev, isLoading: true }));
         try {
-            const response = await shiftSlice.getState().deleteShift(shiftId);
-            await LoadShifts();
+            const response = await shiftSlice.getState().updateShift(shiftId, formData);
+            await loadShifts();
             return response;
         } catch (error) {
-            console.error(error);
-            throw new Error("Error deleting shift");
+            setState(prev => ({ ...prev, isLoading: false, error: error.message }));
+            throw error;
         }
-    }, [LoadShifts]);
+    }, [loadShifts]);
+
+    /**
+     * Delete a shift
+     */
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
+    const deleteShift = useCallback(async (shiftId) => {
+        setState(prev => ({ ...prev, isLoading: true }));
+        try {
+            const response = await shiftSlice.getState().deleteShift(shiftId);
+            await loadShifts();
+            return response;
+        } catch (error) {
+            setState(prev => ({ ...prev, isLoading: false, error: error.message }));
+            throw error;
+        }
+    }, [loadShifts]);
 
     const contextValue = useMemo(() => ({
         ...state,
-        LoadShifts,
+        loadShifts,
         setPage,
         createShift,
         deleteShift,
         updateShift
-    }), [state, LoadShifts, setPage, createShift, deleteShift,updateShift]);
+    }), [state, loadShifts, setPage, createShift, deleteShift, updateShift]);
 
     return (
         <ShiftContext.Provider value={contextValue}>
@@ -125,7 +181,6 @@ export const ShiftProvider = ({ children }) => {
 
 export const useShiftContext = () => {
     const context = useContext(ShiftContext);
-    // console.log('ShiftContext:', context);
     if (!context) throw new Error('useShiftContext must be used within a ShiftProvider');
     return context;
 };
