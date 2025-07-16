@@ -1,7 +1,8 @@
 // import React, { useState } from 'react';
 import { NavLink } from 'react-router'; // 🛠️ đúng là 'react-router-dom' chứ không phải 'react-router'
 
-const SideBar = ({ menuInfo }) => {
+const SideBar = ({ menuInfo, isOpenSidebar }) => {
+    const sidebarWidth = isOpenSidebar ? 256 : 64
     // const [activeMenu, setActiveMenu] = useState(null);
 
     // const toggleMenu = (index) => {

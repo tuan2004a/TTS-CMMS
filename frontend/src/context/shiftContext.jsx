@@ -114,6 +114,28 @@ export const ShiftProvider = ({ children }) => {
      * Update an existing shift
      */
     const updateShift = useCallback(async (shiftId, formData) => {
+<<<<<<< HEAD
+    try {
+        // Chuẩn hóa description nếu là mảng → convert sang chuỗi (nếu cần)
+        const payload = {
+            ...formData,
+            description: Array.isArray(formData.description)
+              ? formData.description.join(', ')
+              : formData.description
+        }
+
+        const response = await shiftSlice.getState().updateShift(shiftId, payload);
+        console.log('Cập nhật thành công');
+        await LoadShifts(); // cập nhật lại danh sách sau khi sửa
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Error updating shift");
+    }
+    }, [LoadShifts]);
+
+
+=======
         setState(prev => ({ ...prev, isLoading: true }));
         try {
             const response = await shiftSlice.getState().updateShift(shiftId, formData);
@@ -128,6 +150,7 @@ export const ShiftProvider = ({ children }) => {
     /**
      * Delete a shift
      */
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
     const deleteShift = useCallback(async (shiftId) => {
         setState(prev => ({ ...prev, isLoading: true }));
         try {

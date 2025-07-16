@@ -6,6 +6,25 @@ export class ShiftService {
         this.baseUrl = `${API_URL}/shift`;
     }
 
+<<<<<<< HEAD
+    async createShift(data){
+        try {
+            const payload = {
+            ...data,
+            description: Array.isArray(data.description)
+                ? data.description.join(', ') // chuyển sang chuỗi
+                : data.description
+            }
+
+            const res = await axios.post(API_URL + '/shift/createShifts', payload)
+            return res.data
+        } catch (error) {
+            console.log('❌ Lỗi gọi API:', error)
+            throw error
+        }
+        }
+
+=======
     async getShifts({page, limit, keyword, searchField}) {
         const res = await axios.get(`${this.baseUrl}/getALl`, {
             params: {
@@ -17,6 +36,7 @@ export class ShiftService {
         });
         return res.data;
     }
+>>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
 
     async createShift(data) {
         const res = await axios.post(`${this.baseUrl}/createShifts`, data);
