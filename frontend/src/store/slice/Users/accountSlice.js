@@ -4,39 +4,41 @@ import { showError } from '../../../utils/toast';
 
 const accountSlice = create((set) => ({
     fetchAccounts: async ({page, limit}) => {
-        try {
-            const accountService = new AccountService();
-            const result = await accountService.getAccounts({page, limit});
-            const accounts = result;
-            set({ accounts: accounts });
-            return accounts;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const accountService = new AccountService();
+        const result = await accountService.getAccounts({page, limit});
+        set({ accounts: result });
+        return result;
     },
 
     createNewAccount: async (accountData) => {
         try {
             const accountService = new AccountService();
-            const response = await accountService.createAccount(accountData);
-            return response;
+            return await accountService.createAccount(accountData);
         } catch (error) {
-            console.log(error);
-            showError('Thêm người dùng thất bại create ở slice');
-            throw error; // Chuyển tiếp lỗi từ accountService
+            showError('Thêm người dùng thất bại');
+            throw error;
+        }
+    },
+
+    updateAccount: async (accountId, accountData) => {
+        try {
+            const accountService = new AccountService();
+            return await accountService.updateAccount(accountId, accountData);
+        } catch (error) {
+            showError('Cập nhật người dùng thất bại');
+            throw error;
         }
     },
 
     deleteAccount: async (accountId) => {
         try {
             const accountService = new AccountService();
-            const response = await accountService.deleteAccount(accountId);
-            return response;
+            return await accountService.deleteAccount(accountId);
         } catch (error) {
-            console.log(error);
-            throw error; // Chuyển tiếp lỗi từ accountService
+            showError('Xóa người dùng thất bại');
+            throw error;
         }
     }
-}))
+}));
+
 export default accountSlice;

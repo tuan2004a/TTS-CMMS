@@ -5,14 +5,12 @@ const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, on
     const isControlled = value !== undefined;
     const currentValue = isControlled ? value : internalValue;
     
-    // Sync internal state with controlled value
     useEffect(() => {
         if (isControlled) {
             setInternalValue(value);
         }
     }, [value, isControlled]);
 
-    // Handle debounced search for uncontrolled mode
     useEffect(() => {
         if (!isControlled && onSearch) {
             const delaySearch = setTimeout(() => {

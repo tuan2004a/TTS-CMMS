@@ -9,31 +9,48 @@ import UsersManagement from './Index';
 import DeleteModal from '../../components/modal/DeleteModal';
 import useOpenModelDelete from '../../hooks/useOpenModelDelete';
 import FormAddNew from '../../components/users/account/FormAddNew';
-import { AccountProvider,useAccountContext } from '../../context/accountContext';
+import FormEditData from '../../components/users/account/FormEditData';
+import { AccountProvider, useAccountContext } from '../../context/accountContext';
 import { Pagination } from 'antd';
-import { showSuccess } from '../../utils/toast';
+import { showSuccess, showError } from '../../utils/toast';
 import useOpenFormAddNew from '../../hooks/useOpenFormAddNew';
+import useOpenFormEdit from '../../hooks/useOpenFormEdit';
 import { ShiftProvider } from '../../context/shiftContext';
 
 const AccountContent = () => {
-    const {isOpenModelDelete,handleOpenModelDelete,handleCloseModelDelete,} = useOpenModelDelete();
+    const { isOpenModelDelete, handleOpenModelDelete, handleCloseModelDelete } = useOpenModelDelete();
     const { isOpenFormAddNew, handleOpenFormAddNew, handleCloseFormAddNew } = useOpenFormAddNew();
-    const { deleteAccount, accounts, pagination, setPage } = useAccountContext();
+    const { isOpenFormEdit, handleOpenFormEdit, handleCloseFormEdit } = useOpenFormEdit();
+    const { deleteAccount, accounts, pagination, LoadAccount } = useAccountContext();
 
     const accountData = accounts?.docs || [];
 
-    const [btnClick, setBtnClick] = useState([]);
-    // const [selectedAccount, setSelectedAccount] = useState(null);
+    const [selectedAccountId, setSelectedAccountId] = useState(null);
+    const [selectedAccount, setSelectedAccount] = useState(null);
 
-    const handleDeleteShift = async () => {
+    const handleDeleteAccount = async () => {
         try {
-            await deleteAccount(btnClick);
+            await deleteAccount(selectedAccountId);
             handleCloseModelDelete();
             showSuccess('Xóa thành công');
-        } catch (error) {
-            console.log(error);
+        } catch {
+            showError('Xóa thất bại');
         }
-    }
+    };
+
+    const handleEditClick = (account) => {
+        setSelectedAccount(account);
+        handleOpenFormEdit();
+    };
+
+    const handleDeleteClick = (accountId) => {
+        setSelectedAccountId(accountId);
+        handleOpenModelDelete();
+    };
+
+    const handlePageChange = (page) => {
+        LoadAccount({ p: page });
+    };
 
     return (
         <div>
@@ -63,21 +80,20 @@ const AccountContent = () => {
                     </tr>
                     </thead>
                     <tbody className="w-full">
-
-                        {accountData?.length > 0 && accountData?.map((items,index)=>(
+                        {accountData?.length > 0 && accountData.map((item, index) => (
                             <Cols key={index}>
-                                <Rows>{items?.code}</Rows>
-                                <Rows>{items?.name}</Rows>
-                                <Rows>{items?.email}</Rows>
-                                <Rows>{items?.phone}</Rows>
-                                <Rows>{items?.roleId?.role}</Rows>
-                                <Rows>{items?.status}</Rows>
-                                <Rows>{items?.departmentId}</Rows>
-                                <Rows  className="block space-x-2">
-                                    <BtnAction dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
+                                <Rows>{item?.code}</Rows>
+                                <Rows>{item?.name}</Rows>
+                                <Rows>{item?.email}</Rows>
+                                <Rows>{item?.phone}</Rows>
+                                <Rows>{item?.roleId?.role}</Rows>
+                                <Rows>{item?.status}</Rows>
+                                <Rows>{item?.departmentId}</Rows>
+                                <Rows className="block space-x-2">
+                                    <BtnAction onClick={() => handleEditClick(item)} dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
                                         <i className="fa-solid fa-file-pen"></i>
                                     </BtnAction>
-                                    <BtnAction onClick={() => {handleOpenModelDelete(), setBtnClick(items?._id)} } dataTooltip="Xóa" className="bg-red-500">
+                                    <BtnAction onClick={() => handleDeleteClick(item?._id)} dataTooltip="Xóa" className="bg-red-500">
                                         <i className="fa-solid fa-trash-can"></i>
                                     </BtnAction>
                                 </Rows>
@@ -85,20 +101,33 @@ const AccountContent = () => {
                         ))}
                     </tbody>
                 </table>
-                <Pagination
-                    current={pagination?.currentPage}
-                    total={pagination?.totalDocs}
-                    pageSize={pagination?.limit}
-                    onChange={(page) => setPage(page)}
-                />
+                {pagination && (
+                    <Pagination
+                        current={pagination.page}
+                        total={pagination.totalDocs}
+                        pageSize={pagination.limit}
+                        onChange={handlePageChange}
+                    />
+                )}
             </div>
 
-            <div>
-                <DeleteModal onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} onOpen={handleOpenModelDelete} />
-            </div>
-            <div>
-                <FormAddNew  isOpenFormAddNew={isOpenFormAddNew} handleCloseFormAddNew={handleCloseFormAddNew} />  
-            </div>
+            <DeleteModal 
+                onDelete={handleDeleteAccount} 
+                isOpenModelDelete={isOpenModelDelete} 
+                onClose={handleCloseModelDelete} 
+                onOpen={handleOpenModelDelete} 
+            />
+            
+            <FormAddNew 
+                isOpenFormAddNew={isOpenFormAddNew} 
+                handleCloseFormAddNew={handleCloseFormAddNew} 
+            />  
+            
+            <FormEditData 
+                isOpen={isOpenFormEdit} 
+                handleCloseForm={handleCloseFormEdit} 
+                accountData={selectedAccount} 
+            />
         </div>
     );
 };

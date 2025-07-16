@@ -15,7 +15,7 @@ const initialState = {
 
 export const AccountProvider = ({children}) => {
     const [state, setState] = useState(initialState);
-    const fetchShiftsRef = useRef(null);
+    const fetchAccountsRef = useRef(null);
 
     const LoadAccount = useCallback(async({ p = state.currentPage, l = state.limit } = {}) =>{
         setState(prev => ({ ...prev, isLoading: true }));
@@ -36,7 +36,7 @@ export const AccountProvider = ({children}) => {
         } catch (error) {
             setState(prev => ({
                 ...prev,
-                shifts: [],
+                accounts: [], // Fixed: was incorrectly setting shifts array
                 isLoading: false,
                 error,
             }));
@@ -44,9 +44,9 @@ export const AccountProvider = ({children}) => {
     },[state.currentPage, state.limit]);
 
     useEffect(() => {
-        fetchShiftsRef.current = LoadAccount;
-        if (fetchShiftsRef.current) {
-            fetchShiftsRef.current();
+        fetchAccountsRef.current = LoadAccount;
+        if (fetchAccountsRef.current) {
+            fetchAccountsRef.current();
         }
     }, [LoadAccount]);
 
@@ -56,8 +56,18 @@ export const AccountProvider = ({children}) => {
             await LoadAccount();
             return response;
         } catch (error) {
-            console.error(error);
-            showError('Thêm người dùng thất bại create ở context');
+            showError('Thêm người dùng thất bại');
+            throw error;
+        }
+    }, [LoadAccount]);
+
+    const updateAccount = useCallback(async (accountId, formData) => {
+        try {
+            const response = await accountSlice.getState().updateAccount(accountId, formData);
+            await LoadAccount();
+            return response;
+        } catch (error) {
+            showError('Cập nhật người dùng thất bại');
             throw error;
         }
     }, [LoadAccount]);
@@ -68,8 +78,8 @@ export const AccountProvider = ({children}) => {
             await LoadAccount();
             return response;
         } catch (error) {
-            console.error(error);
-            throw error; // Chuyển tiếp lỗi từ accountSlice
+            showError('Xóa người dùng thất bại');
+            throw error;
         }
     }, [LoadAccount]);
     
@@ -77,15 +87,16 @@ export const AccountProvider = ({children}) => {
         ...state,
         LoadAccount,
         deleteAccount,
-        createAccount
-    }), [state, LoadAccount, deleteAccount, createAccount])
+        createAccount,
+        updateAccount
+    }), [state, LoadAccount, deleteAccount, createAccount, updateAccount]);
 
     return (
         <AccountContext.Provider value={contextValue}>
             {children}
         </AccountContext.Provider>
-    )
-}
+    );
+};
 
 export const useAccountContext = () =>{
     const context = useContext(AccountContext);

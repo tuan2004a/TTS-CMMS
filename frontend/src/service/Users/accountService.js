@@ -4,18 +4,18 @@ import { showSuccess, showError } from '../../utils/toast';
 
 export class AccountService {
     constructor() {}
+
     async getAccounts({page, limit}) {
         try {
-            const res = await axios.get(API_URL + '/users/getALl', {
+            const res = await axios.get(API_URL + '/users/getAll', {
                 params: {
                     page,
                     limit,
                 },
             });
-            console.log(res.data);
             return res.data;
         } catch (error) {
-            console.log(error);
+            showError('Lỗi khi lấy danh sách người dùng');
             throw error;
         }
     }
@@ -26,8 +26,18 @@ export class AccountService {
             showSuccess('Thêm người dùng thành công');
             return res.data;
         } catch (error) {
-            console.log(error);
-            showError('Thêm người dùng thất bại create ở service');
+            showError('Thêm người dùng thất bại');
+            throw error;
+        }
+    }
+
+    async updateAccount(accountId, data) {
+        try {
+            const res = await axios.put(API_URL + '/users/updateUsers/' + accountId, data);
+            showSuccess('Cập nhật người dùng thành công');
+            return res.data;
+        } catch (error) {
+            showError('Cập nhật người dùng thất bại');
             throw error;
         }
     }
@@ -35,12 +45,11 @@ export class AccountService {
     async deleteAccount(accountId) {
         try {
             const res = await axios.delete(API_URL + '/users/deleteUsers/' + accountId);
-            // console.log(res.data);
+            showSuccess('Xóa người dùng thành công');
             return res.data;
         } catch (error) {
-            console.log(error);
+            showError('Xóa người dùng thất bại');
             throw error;
         }
     }
-
 }
