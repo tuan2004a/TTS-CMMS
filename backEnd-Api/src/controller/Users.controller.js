@@ -17,7 +17,14 @@ exports.getAll = async(req, res) => {
         let query = {};
 
         if(keyword){
-            query.name = {$regex: new RegExp(keyword, "i")};
+            // Tìm kiếm theo nhiều trường: tên, email và số điện thoại
+            query = {
+                $or: [
+                    { name: { $regex: new RegExp(keyword, "i") } },
+                    { email: { $regex: new RegExp(keyword, "i") } },
+                    { phone: { $regex: new RegExp(keyword, "i") } }
+                ]
+            };
         }
 
         const User = await Users.paginate(query, {...optionsPaginations, page});

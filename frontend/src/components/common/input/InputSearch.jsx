@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
+import PropTypes from 'prop-types';
 
 const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, onChange }) => {
     const [internalValue, setInternalValue] = useState("");
@@ -75,4 +76,12 @@ const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, on
     );
 };
 
-export default InputSearch;
+InputSearch.propTypes = {
+    onSearch: PropTypes.func,
+    onClear: PropTypes.func,
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func
+};
+
+export default memo(InputSearch);
