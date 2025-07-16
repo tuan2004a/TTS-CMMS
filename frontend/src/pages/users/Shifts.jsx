@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import InputSearch from '../../components/common/input/InputSearch'
 import BtnSubmit from '../../components/common/button/BtnSubmit'
 import Cols from '../../components/table/Cols'
@@ -15,25 +14,7 @@ import { toast } from 'react-toastify'
 import { Pagination } from 'antd'
 import FormEditData from '../../components/users/shift/FormEditData'
 import useOpenFormEdit from '../../hooks/useOpenFormEdit'
-=======
-import React, { useState } from "react";
-import InputSearch from "../../components/common/input/InputSearch";
-import BtnSubmit from "../../components/common/button/BtnSubmit";
-import Cols from "../../components/table/Cols";
-import Rows from "../../components/table/Rows";
-import BtnAction from "../../components/common/button/BtnAction";
-import InputCheckBoxStatus from "../../components/common/input/InputCheckBoxStatus";
-import UsersManagement from "./Index";
-import { ShiftProvider, useShiftContext } from "../../context/shiftContext";
-import FormAddNew from "../../components/users/shift/FormAddNew";
-import useOpenFormAddNew from "../../hooks/useOpenFormAddNew";
-import ModalDelete from "../../components/modal/DeleteModal";
-import useOpenModalDelete from "../../hooks/useOpenModelDelete";
-import { toast } from "react-toastify";
-import { Pagination } from "antd";
-import FormEditData from "../../components/users/shift/FormEditData";
-import useOpenFormEdit from "../../hooks/useOpenFormEdit";
->>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
+import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
 
 const ShiftsContext = () => {
     // Form state hooks
@@ -42,7 +23,7 @@ const ShiftsContext = () => {
     const { isOpenFormEdit, handleOpenFormEdit, handleCloseFormEdit } = useOpenFormEdit();
 
     // Context data and methods
-    const { shifts, deleteShift, pagination, setPage, loadShifts } = useShiftContext();
+    const { shifts, deleteShift, pagination, setPage, loadShifts, isLoading, error } = useShiftContext();
 
     // Local state
     const [keyword, setKeyword] = useState("");
@@ -50,6 +31,19 @@ const ShiftsContext = () => {
     const [searchField, setSearchField] = useState("");
     const [btnClick, setBtnClick] = useState([]);
     const [selectedShift, setSelectedShift] = useState(null);
+
+    // Load data when component mounts
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await loadShifts();
+            } catch (error) {
+                console.error("Error loading shifts:", error);
+            }
+        };
+        
+        fetchData();
+    }, [loadShifts]);
 
     // Search handlers
     const handleSearch = async (value) => {
@@ -102,6 +96,25 @@ const ShiftsContext = () => {
         handleOpenFormEdit();
     };
 
+    // Render loading state
+    if (isLoading && !shifts?.docs) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+            </div>
+        );
+    }
+
+    // Render error state
+    if (error && !shifts?.docs) {
+        return (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong className="font-bold">Lỗi!</strong>
+                <span className="block sm:inline"> {error}</span>
+            </div>
+        );
+    }
+
     return (
         <div>
             <div className="flex items-center justify-between flex-wrap">
@@ -133,53 +146,57 @@ const ShiftsContext = () => {
                             <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian ca</th>
                             <th className="font-semibold pr-6 py-3 text-nowrap">Ghi chú</th>
                             <th className="font-semibold pr-6 py-3 text-nowrap">Trạng thái</th>
-                            <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian</th>
+                            <th className="font-semibold pr-6 py-3 text-nowrap">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {shifts?.docs?.length > 0
-                            ? shifts.docs.map((item, index) => (
-                                  <Cols key={item._id || index}>
-                                      <Rows>{item?.shift}</Rows>
-                                      <Rows>{item?.time}</Rows>
-                                      <Rows>{item?.description}</Rows>
-                                      <Rows className="overflow-hidden">
-                                          <InputCheckBoxStatus className="size-5 ml-1" />
-                                      </Rows>
-                                      <Rows className="block space-x-2">
-                                          <BtnAction onClick={() => handleEditShift(item)} dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
-                                              <i className="fa-solid fa-file-pen"></i>
-                                          </BtnAction>
-                                          <BtnAction
-                                              onClick={() => {
-                                                  handleOpenModelDelete();
-                                                  setBtnClick(item?._id);
-                                              }}
-                                              dataTooltip="Xóa"
-                                              className="bg-red-500"
-                                          >
-                                              <i className="fa-solid fa-trash-can"></i>
-                                          </BtnAction>
-                                      </Rows>
-                                  </Cols>
-                              ))
-                            : searchTriggered && (
-                                  <tr>
-                                      <td colSpan="5" className="py-5 text-center text-red-500 font-medium">
-                                          Không tìm thấy kết quả phù hợp với từ khóa đã nhập.
-                                      </td>
-                                  </tr>
-                              )}
+                        {shifts?.docs?.length > 0 ? (
+                            shifts.docs.map((item, index) => (
+                                <Cols key={item._id || index}>
+                                    <Rows>{item?.shift}</Rows>
+                                    <Rows>{item?.time}</Rows>
+                                    <Rows>{item?.description}</Rows>
+                                    <Rows className="overflow-hidden">
+                                        <InputCheckBoxStatus className="size-5 ml-1" />
+                                    </Rows>
+                                    <Rows className="block space-x-2">
+                                        <BtnAction onClick={() => handleEditShift(item)} dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
+                                            <i className="fa-solid fa-file-pen"></i>
+                                        </BtnAction>
+                                        <BtnAction
+                                            onClick={() => {
+                                                handleOpenModelDelete();
+                                                setBtnClick(item?._id);
+                                            }}
+                                            dataTooltip="Xóa"
+                                            className="bg-red-500"
+                                        >
+                                            <i className="fa-solid fa-trash-can"></i>
+                                        </BtnAction>
+                                    </Rows>
+                                </Cols>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="5" className="py-5 text-center text-gray-500 font-medium">
+                                    {searchTriggered 
+                                        ? "Không tìm thấy kết quả phù hợp với từ khóa đã nhập." 
+                                        : "Chưa có dữ liệu ca làm. Vui lòng thêm mới."}
+                                </td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
 
                 {pagination?.totalDocs > 0 && (
-                    <Pagination 
-                        current={pagination?.currentPage} 
-                        total={pagination?.totalDocs} 
-                        pageSize={pagination?.limit} 
-                        onChange={handleChange} 
-                    />
+                    <div className="mt-4 flex justify-center">
+                        <Pagination 
+                            current={pagination?.currentPage} 
+                            total={pagination?.totalDocs} 
+                            pageSize={pagination?.limit} 
+                            onChange={handleChange} 
+                        />
+                    </div>
                 )}
             </div>
 
@@ -187,90 +204,8 @@ const ShiftsContext = () => {
             <FormEditData isOpen={isOpenFormEdit} handleCloseForm={handleCloseFormEdit} shiftData={selectedShift} />
             <ModalDelete onDelete={handleDeleteShift} isOpenModelDelete={isOpenModelDelete} onClose={handleCloseModelDelete} />
         </div>
-<<<<<<< HEAD
-      </div>
-
-      <div className="mt-5 overflow-x-scroll">
-        <table className="text-left w-full mt-5 min-w-[850px] table-auto">
-          <thead>
-            <tr className="text-gray-500 text-[15px] leading-normal font-medium border-b border-gray-200">
-              <th className="font-semibold pr-6 py-3 text-nowrap">Ca làm</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian ca</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Ngày làm</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {shiftsData.length > 0 ? (
-              shiftsData.map((items, index) => (
-                <Cols key={index}>
-                  <Rows>{items?.shift}</Rows>
-                  <Rows>{items?.time}</Rows>
-                  <Rows>{items?.description}</Rows>
-                  <Rows className="block space-x-2">
-                    <BtnAction
-                      onClick={() => handleEditShift(items)}
-                      dataTooltip="Chỉnh sửa"
-                      className="bg-[#36fe00]"
-                    >
-                      <i className="fa-solid fa-file-pen"></i>
-                    </BtnAction>
-                    <BtnAction
-                      onClick={() => {
-                        handleOpenModelDelete()
-                        setBtnClick(items?._id)
-                      }}
-                      dataTooltip="Xóa"
-                      className="bg-red-500"
-                    >
-                      <i className="fa-solid fa-trash-can"></i>
-                    </BtnAction>
-                  </Rows>
-                </Cols>
-              ))
-            ) : (
-              searchTriggered && (
-                <tr>
-                  <td colSpan="5" className="py-5 text-center text-red-500 font-medium">
-                    Không tìm thấy dữ liệu.
-                  </td>
-                </tr>
-              )
-            )}
-          </tbody>
-        </table>
-
-        <Pagination
-          current={pagination?.currentPage}
-          total={pagination?.totalDocs}
-          pageSize={pagination?.limit}
-          onChange={handleChange}
-        />
-      </div>
-
-      <FormAddNew
-        isOpenFormAddNew={isOpenFormAddNew}
-        handleCloseFormAddNew={handleCloseFormAddNew}
-      />
-
-      <FormEditData
-        isOpen={isOpenFormEdit}
-        handleCloseForm={handleCloseFormEdit}
-        shiftData={selectedShift}
-      />
-
-      <ModalDelete
-        onDelete={handleDeleteShift}
-        isOpenModelDelete={isOpenModelDelete}
-        onClose={handleCloseModelDelete}
-      />
-    </div>
-  )
+    )
 }
-=======
-    );
-};
->>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
 
 const Shifts = () => {
     return (
@@ -279,7 +214,7 @@ const Shifts = () => {
                 <ShiftsContext />
             </UsersManagement>
         </ShiftProvider>
-    );
-};
+    )
+}
 
-export default Shifts;
+export default Shifts

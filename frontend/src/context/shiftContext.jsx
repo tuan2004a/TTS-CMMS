@@ -1,11 +1,11 @@
 // context/shiftContext.jsx
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import shiftSlice from "../store/slice/Users/shiftSlice";
 
 export const ShiftContext = createContext(null);
 
 const initialState = {
-    shifts: [],
+    shifts: null,
     pagination: {},
     isLoading: false,
     error: null,
@@ -15,7 +15,6 @@ const initialState = {
 
 export const ShiftProvider = ({ children }) => {
     const [state, setState] = useState(initialState);
-    const loadShiftsRef = useRef(null);
 
     /**
      * Load shifts data with filtering and pagination
@@ -34,6 +33,10 @@ export const ShiftProvider = ({ children }) => {
                 keyword, 
                 searchField 
             });
+            
+            if (!response) {
+                throw new Error("No response from server");
+            }
             
             const {
                 hasNextPage, 
@@ -70,6 +73,7 @@ export const ShiftProvider = ({ children }) => {
 
             return response;
         } catch (error) {
+            console.error("Failed to load shifts:", error);
             setState(prev => ({
                 ...prev,
                 isLoading: false,
@@ -84,14 +88,10 @@ export const ShiftProvider = ({ children }) => {
      */
     const setPage = useCallback(async (newPage) => {
         setState(prev => ({ ...prev, currentPage: newPage }));
-        await loadShifts({ page: newPage });
-    }, [loadShifts]);
-
-    // Initial data loading
-    useEffect(() => {
-        loadShiftsRef.current = loadShifts;
-        if (loadShiftsRef.current) {
-            loadShiftsRef.current();
+        try {
+            await loadShifts({ page: newPage });
+        } catch (error) {
+            console.error("Error setting page:", error);
         }
     }, [loadShifts]);
 
@@ -114,7 +114,6 @@ export const ShiftProvider = ({ children }) => {
      * Update an existing shift
      */
     const updateShift = useCallback(async (shiftId, formData) => {
-<<<<<<< HEAD
     try {
         // Chuẩn hóa description nếu là mảng → convert sang chuỗi (nếu cần)
         const payload = {
@@ -126,31 +125,15 @@ export const ShiftProvider = ({ children }) => {
 
         const response = await shiftSlice.getState().updateShift(shiftId, payload);
         console.log('Cập nhật thành công');
-        await LoadShifts(); // cập nhật lại danh sách sau khi sửa
+        await loadShifts(); // cập nhật lại danh sách sau khi sửa
         return response;
     } catch (error) {
         console.error(error);
         throw new Error("Error updating shift");
     }
-    }, [LoadShifts]);
-
-
-=======
-        setState(prev => ({ ...prev, isLoading: true }));
-        try {
-            const response = await shiftSlice.getState().updateShift(shiftId, formData);
-            await loadShifts();
-            return response;
-        } catch (error) {
-            setState(prev => ({ ...prev, isLoading: false, error: error.message }));
-            throw error;
-        }
     }, [loadShifts]);
 
-    /**
-     * Delete a shift
-     */
->>>>>>> aa48bf97dda279eb82d45608b115ed91ba34621c
+
     const deleteShift = useCallback(async (shiftId) => {
         setState(prev => ({ ...prev, isLoading: true }));
         try {
