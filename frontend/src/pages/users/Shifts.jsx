@@ -4,7 +4,6 @@ import BtnSubmit from '../../components/common/button/BtnSubmit'
 import Cols from '../../components/table/Cols'
 import Rows from '../../components/table/Rows'
 import BtnAction from '../../components/common/button/BtnAction'
-import InputCheckBoxStatus from '../../components/common/input/InputCheckBoxStatus'
 import UsersManagement from './Index'
 import { ShiftProvider, useShiftContext } from '../../context/shiftContext'
 import FormAddNew from '../../components/users/shift/FormAddNew'
@@ -96,9 +95,8 @@ const ShiftsContext = () => {
             <tr className="text-gray-500 text-[15px] leading-normal font-medium border-b border-gray-200">
               <th className="font-semibold pr-6 py-3 text-nowrap">Ca làm</th>
               <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian ca</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Nghi chú</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Trạng thái</th>
-              <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian</th>
+              <th className="font-semibold pr-6 py-3 text-nowrap">Ngày làm</th>
+              <th className="font-semibold pr-6 py-3 text-nowrap">Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -108,9 +106,6 @@ const ShiftsContext = () => {
                   <Rows>{items?.shift}</Rows>
                   <Rows>{items?.time}</Rows>
                   <Rows>{items?.description}</Rows>
-                  <Rows className="overflow-hidden">
-                    <InputCheckBoxStatus className="size-5 ml-1" />
-                  </Rows>
                   <Rows className="block space-x-2">
                     <BtnAction
                       onClick={() => handleEditShift(items)}
@@ -136,7 +131,7 @@ const ShiftsContext = () => {
               searchTriggered && (
                 <tr>
                   <td colSpan="5" className="py-5 text-center text-red-500 font-medium">
-                    Không tìm thấy kết quả phù hợp với từ khóa đã nhập.
+                    Không tìm thấy dữ liệu.
                   </td>
                 </tr>
               )

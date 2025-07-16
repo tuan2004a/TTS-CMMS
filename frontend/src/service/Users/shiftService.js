@@ -22,13 +22,21 @@ export class ShiftService {
 
     async createShift(data){
         try {
-            const res = await axios.post(API_URL + '/shift/createShifts', data);
-            return res.data;
+            const payload = {
+            ...data,
+            description: Array.isArray(data.description)
+                ? data.description.join(', ') // chuyển sang chuỗi
+                : data.description
+            }
+
+            const res = await axios.post(API_URL + '/shift/createShifts', payload)
+            return res.data
         } catch (error) {
-            console.log(error);
-            throw error;
+            console.log('❌ Lỗi gọi API:', error)
+            throw error
         }
-    }
+        }
+
 
     async updateShift(shiftId, shiftData){
         try {
