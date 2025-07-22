@@ -8,8 +8,7 @@ const UsersManagement = ({ children }) => {
         icon: 'fa-solid fa-users',
         submenu: [
             { title: 'Tài khoản',path: '/users/account', icon: 'fa-solid fa-user' },
-            { title: 'Phân quyền', path: '/users/role', icon: 'fa-solid fa-user-shield' },
-            { title: 'Bộ phận', path: '/users/department', icon: 'fa-solid fa-building' },
+            // { title: 'Bộ phận', path: '/users/department', icon: 'fa-solid fa-building' },
             { title: 'Ca làm', path: '/users/shift', icon: 'fa-solid fa-clock' }
         ]
     };

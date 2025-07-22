@@ -11,9 +11,13 @@ const ControlPanel = () => {
                     <i className="fa-solid fa-user text-4xl mb-5"></i>
                     Quản lý người dùng
                 </Link>
-                <Link to={'/systemMaintenance/dashboard'} className='flex flex-col items-center size-full rounded-lg font-semibold text-lg border-2 border-[#ba9f5b] p-5'>
+                <Link to={'/systemMaintenance/dashboard'} className='hidden flex flex-col items-center size-full rounded-lg font-semibold text-lg border-2 border-[#ba9f5b] p-5'>
                     <i className="fa-solid fa-screwdriver-wrench text-4xl mb-5"></i>
                     Bảo trì
+                </Link>
+                <Link to={'/works/work'} className='flex flex-col items-center size-full rounded-lg font-semibold text-lg border-2 border-[#ba9f5b] p-5'>
+                    <i className="fa-solid fa-briefcase text-4xl mb-5"></i>
+                    Quản lý công việc
                 </Link>
             </div>
         </div>

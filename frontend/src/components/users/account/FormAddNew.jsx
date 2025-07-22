@@ -111,37 +111,6 @@ const FormAddNew = ({ isOpenFormAddNew, handleCloseFormAddNew }) => {
                             {error.name === 'password' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
                         </label>
                     </div>
-                    <label htmlFor="department" className='w-full'>
-                        <span className='mt-5 block text-base font-medium text-gray-500'>Bộ phận</span>
-                        <input name="department" value={formData.department || ''} onChange={handleInputChange} type="text" className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' placeholder='Nhập bộ phận' required />
-                        {error.name === 'department' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
-                    </label>
-                    <label>
-                        <span className='mt-5 block text-base font-medium text-gray-500'>Vai trò</span>
-                        <Select
-                            className="w-full"
-                            showSearch
-                            placeholder="Chọn vai trò"
-                            optionFilterProp="label"
-                            onChange={onChange}
-                            onSearch={onSearch}
-                            options={[
-                                {
-                                    value: 'admin',
-                                    label: 'Admin',
-                                },
-                                {
-                                    value: 'manager',
-                                    label: 'Manager',
-                                },
-                                {
-                                    value: 'user',
-                                    label: 'User',
-                                },
-                            ]}
-                        />
-                        {error.name === 'role' && (<p className='text-red-500 text-sm'>{error.message}</p>)}
-                    </label>
                 </form>
                 <div className='flex items-center justify-end space-x-3 mt-6'>
                     <BtnSubmit onClick={handleCloseForm} className={'border border-gray-300 py-2.5 px-5 hover:bg-gray-50'}>

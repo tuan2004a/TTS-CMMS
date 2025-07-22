@@ -55,6 +55,7 @@ exports.createUsers = async(req, res) => {
             ...saveUsers
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             result: false,
             msg: 'lỗi tạo mới',
@@ -66,38 +67,9 @@ exports.createUsers = async(req, res) => {
 exports.updateUsers = async(req, res) => {
     try {
         const UserId = req.params.id;
+        const { code, name, email, phone, password, shiftsId, departmentId } = req.body;
+        const updateUsers = await Users.findByIdAndUpdate(UserId, {code, name, email, phone, password, shiftsId, departmentId},{new:true}).exec();
         
-        // Get current user to preserve fields not provided in the request
-        const currentUser = await Users.findById(UserId);
-        if (!currentUser) {
-            return res.status(404).send({
-                result: false,
-                msg: 'Không tìm thấy User cần update',
-            });
-        }
-        
-        // Destructure request body
-        const {code, name, email, phone, password, status, roleId, shiftsId, departmentId} = req.body;
-        
-        // Build update object with current values as fallback
-        const updateData = {
-            code: code || currentUser.code,
-            name: name || currentUser.name,
-            email: email || currentUser.email,
-            phone: phone || currentUser.phone,
-            // Keep current password if not provided
-            password: password || currentUser.password,
-            status: status || currentUser.status,
-            roleId: roleId || currentUser.roleId,
-            shiftsId: shiftsId || currentUser.shiftsId,
-            departmentId: departmentId || currentUser.departmentId
-        };
-        
-        const updateUsers = await Users.findByIdAndUpdate(
-            UserId, 
-            updateData,
-            {new: true}
-        ).exec();
 
         if(!updateUsers){
             return res.status(404).send({
@@ -112,6 +84,7 @@ exports.updateUsers = async(req, res) => {
             ...updateUsers
         });
     } catch (error) {
+        console.log(error)
         return res.status(500).send({
             result: false,
             msg: 'lỗi cập nhật',

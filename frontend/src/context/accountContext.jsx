@@ -101,7 +101,6 @@ export const AccountProvider = ({ children }) => {
             await loadAccount();
             return response;
         } catch (error) {
-            showError('Cập nhật người dùng thất bại');
             throw error;
         }
     }, [loadAccount]);

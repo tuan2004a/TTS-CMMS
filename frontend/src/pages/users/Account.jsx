@@ -123,7 +123,7 @@ const AccountContent = () => {
                     <InputSearch 
                         onSearch={handleSearch} 
                         onClear={handleClear}
-                        placeholder="Tìm theo tên, email hoặc SĐT"
+                        placeholder="Tìm theo tên"
                         value={searchKeyword}
                         onChange={handleSearchChange}
                     />
@@ -143,8 +143,6 @@ const AccountContent = () => {
                         <th className="font-semibold pr-6 py-3 text-nowrap">Tên</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">Email</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">SĐT</th>
-                        <th className="font-semibold pr-6 py-3 text-nowrap">Vai trò</th>
-                        <th className="font-semibold pr-6 py-3 text-nowrap">Trạng thái</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">Bộ phận</th>
                         <th className="font-semibold pr-6 py-3 text-nowrap">Hành động</th>
                     </tr>
@@ -157,8 +155,6 @@ const AccountContent = () => {
                                     <Rows>{item?.name}</Rows>
                                     <Rows>{item?.email}</Rows>
                                     <Rows>{item?.phone}</Rows>
-                                    <Rows>{item?.roleId?.role}</Rows>
-                                    <Rows>{item?.status}</Rows>
                                     <Rows>{item?.departmentId}</Rows>
                                     <Rows className="block space-x-2">
                                         <BtnAction onClick={() => handleEditClick(item)} dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">

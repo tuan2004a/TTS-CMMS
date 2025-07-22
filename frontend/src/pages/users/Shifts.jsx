@@ -145,7 +145,6 @@ const ShiftsContext = () => {
                             <th className="font-semibold pr-6 py-3 text-nowrap">Ca làm</th>
                             <th className="font-semibold pr-6 py-3 text-nowrap">Thời gian ca</th>
                             <th className="font-semibold pr-6 py-3 text-nowrap">Ghi chú</th>
-                            <th className="font-semibold pr-6 py-3 text-nowrap">Trạng thái</th>
                             <th className="font-semibold pr-6 py-3 text-nowrap">Hành động</th>
                         </tr>
                     </thead>
@@ -156,9 +155,6 @@ const ShiftsContext = () => {
                                     <Rows>{item?.shift}</Rows>
                                     <Rows>{item?.time}</Rows>
                                     <Rows>{item?.description}</Rows>
-                                    <Rows className="overflow-hidden">
-                                        <InputCheckBoxStatus className="size-5 ml-1" />
-                                    </Rows>
                                     <Rows className="block space-x-2">
                                         <BtnAction onClick={() => handleEditShift(item)} dataTooltip="Chỉnh sửa" className="bg-[#36fe00]">
                                             <i className="fa-solid fa-file-pen"></i>

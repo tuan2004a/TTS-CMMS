@@ -1,7 +1,7 @@
 import BtnClostX from "../common/button/BtnClostX";
 import BtnSubmit from "../common/button/BtnSubmit";
 
-const ModalDelete = ({isOpenModelDelete, onClose, onDelete}) => {
+const ModalDelete = ({isOpenModelDelete, onClose, onDelete }) => {
 
     return (
         <div className={`${isOpenModelDelete?'block':'hidden'}   fixed top-1/2 left-1/2 -translate-1/2 z-50 size-full bg-black/70 backdrop-blur-[3px]`}>

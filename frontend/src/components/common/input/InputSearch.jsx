@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from "react";
 import PropTypes from 'prop-types';
 
-const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, onChange }) => {
+const InputSearch = ({className, onSearch, onClear, placeholder = "Tìm kiếm", value, onChange }) => {
     const [internalValue, setInternalValue] = useState("");
     const isControlled = value !== undefined;
     const currentValue = isControlled ? value : internalValue;
@@ -21,13 +21,6 @@ const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, on
             return () => clearTimeout(delaySearch);
         }
     }, [internalValue, onSearch, isControlled]);
-
-    const handleKeyDown = (e) => {
-        if (e.key === "Enter" && onSearch) {
-            e.preventDefault();
-            onSearch(currentValue.trim());
-        }
-    };
 
     const handleClear = () => {
         if (isControlled && onChange) {
@@ -54,11 +47,10 @@ const InputSearch = ({ onSearch, onClear, placeholder = "Tìm kiếm", value, on
 
             <input 
                 type="text" 
-                className="w-70 py-2.5 outline-none border-none bg-transparent placeholder:text-gray-400" 
+                className={`w-50 py-2.5 outline-none border-none bg-transparent placeholder:text-gray-400" ${className}`}
                 placeholder={placeholder} 
                 value={currentValue} 
                 onChange={handleChange} 
-                onKeyDown={handleKeyDown} 
             />
 
             {currentValue && (

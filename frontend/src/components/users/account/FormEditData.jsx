@@ -62,7 +62,6 @@ const FormEditData = ({isOpen, handleCloseForm, accountData}) => {
             
             await updateAccount(accountData._id, updateData);
             handleCloseForm();
-            showSuccess("Cập nhật người dùng thành công");
         } catch {
             showError("Cập nhật người dùng thất bại");
         }
@@ -127,34 +126,7 @@ const FormEditData = ({isOpen, handleCloseForm, accountData}) => {
                             placeholder='Nhập số điện thoại' 
                             required 
                         />
-                    </label>
-                    <label htmlFor="status">
-                        <span className='mt-4 block mb-1 text-base font-medium text-gray-500'>Trạng thái</span>
-                        <select 
-                            id="status"
-                            name="status" 
-                            value={formData.status} 
-                            onChange={handleChange} 
-                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' 
-                            required
-                        >
-                            <option value="isActive">Hoạt động</option>
-                            <option value="isInActive">Không hoạt động</option>
-                        </select>
-                    </label>
-                    <label htmlFor="roleId">
-                        <span className='mt-4 block mb-1 text-base font-medium text-gray-500'>Vai trò</span>
-                        <input 
-                            id="roleId"
-                            name="roleId" 
-                            value={formData.roleId} 
-                            onChange={handleChange} 
-                            type="text" 
-                            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 block w-full p-2.5' 
-                            placeholder='Chọn vai trò' 
-                            required 
-                        />
-                    </label>
+                    </label>                    
                 </form>
                 <div className='flex items-center justify-end space-x-3 mt-6'>
                     <BtnSubmit onClick={handleCloseForm} className={'border border-gray-300 py-2.5 px-5 hover:bg-gray-50'}>
